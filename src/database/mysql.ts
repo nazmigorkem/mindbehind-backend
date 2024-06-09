@@ -1,9 +1,9 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 import { migrate } from 'drizzle-orm/mysql2/migrator';
 import mysql from 'mysql2/promise.js';
-import * as BranchSchema from './schema/branch.schema';
-import * as RoleSchema from './schema/roles.schema';
-import * as UserSchema from './schema/user.schema';
+import * as BranchSchema from './schemas/branch.schema';
+import * as RoleSchema from './schemas/roles.schema';
+import * as UserSchema from './schemas/user.schema';
 
 const Schemas = {
 	...BranchSchema,

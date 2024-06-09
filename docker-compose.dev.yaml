@@ -16,7 +16,7 @@ services:
             mysql:
                 condition: service_healthy
         env_file:
-            - ./env/dev.env
+            - ./env/.env
 
     mysql:
         image: mysql:8.4
@@ -33,3 +33,10 @@ services:
             interval: 5s
             timeout: 5s
             retries: 30
+
+    adminer:
+        image: adminer
+        container_name: adminer_dev
+        restart: always
+        ports:
+            - '8080:8080'
