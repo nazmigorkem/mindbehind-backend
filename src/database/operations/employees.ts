@@ -1,8 +1,8 @@
 import { MySQLConnection } from 'database/mysql';
 import { EmployeeToRoles } from 'database/schemas/employee-to-roles.schema';
-import { Employees } from 'database/schemas/employees.schema';
+import { Employees } from 'database/schemas/employee.schema';
 import { and, eq } from 'drizzle-orm';
-import { getRoleWithName } from './roles';
+import { getEmployeeRoleWithName } from './employee-roles';
 
 export async function getEmployeeWithEmployeeID(id: string) {
 	return await MySQLConnection.getInstance().query.Employees.findFirst({
@@ -17,7 +17,7 @@ export async function getEmployeeWithUserID(branchID: string, userID: string) {
 }
 
 export async function employeeHasNamedRole(employeeID: string, roleName: string) {
-	const role = await getRoleWithName(roleName);
+	const role = await getEmployeeRoleWithName(roleName);
 	if (!role) {
 		return false;
 	}

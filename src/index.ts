@@ -1,14 +1,15 @@
 import cookieParser from 'cookie-parser';
 import { MySQLConnection } from 'database/mysql';
-import { getRoleWithName } from 'database/operations/roles';
-import { Roles } from 'database/schemas/roles.schema';
+import { getUserRoleWithName } from 'database/operations/user-roles';
+import { UserRoles } from 'database/schemas/user-roles.schema';
 import { migrate } from 'drizzle-orm/mysql2/migrator';
 import express from 'express';
 import { userAuth } from 'middlewares/auth';
 import AuthRouter from 'routes/auth';
 import BranchesRouter from 'routes/branch';
-import RolesRouter from 'routes/roles';
+import EmployeeRolesRouter from 'routes/employee-roles';
 import UsersRouter from 'routes/user';
+import UserRolesRouter from 'routes/user-roles';
 import { EnvFile } from 'types/env';
 
 const app = express();
@@ -18,7 +19,8 @@ app.use(express.json());
 
 app.use('/branches', userAuth, BranchesRouter);
 app.use('/users', UsersRouter);
-app.use('/roles', RolesRouter);
+app.use('/employee-roles', EmployeeRolesRouter);
+app.use('/user-roles', UserRolesRouter);
 app.use('/auth', AuthRouter);
 
 app.listen(3000, async () => {
@@ -29,15 +31,15 @@ app.listen(3000, async () => {
 		migrationsFolder: './drizzle',
 	});
 
-	const ownerRole = await getRoleWithName('owner');
+	const ownerRole = await getUserRoleWithName('owner');
 	if (!ownerRole) {
 		console.log('Creating owner role.');
-		await instance.insert(Roles).values({ name: 'owner' });
+		await instance.insert(UserRoles).values({ name: 'owner' });
 	}
 
-	const employeeRole = await getRoleWithName('employee');
+	const employeeRole = await getUserRoleWithName('employee');
 	if (!employeeRole) {
 		console.log('Creating employee role.');
-		await instance.insert(Roles).values({ name: 'employee' });
+		await instance.insert(UserRoles).values({ name: 'employee' });
 	}
 });

@@ -1,17 +1,19 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise.js';
 import * as BranchSchema from './schemas/branch.schema';
-import * as EmployeeToRoles from './schemas/employee-to-roles.schema';
-import * as EmployeeSchema from './schemas/employees.schema';
-import * as RoleSchema from './schemas/roles.schema';
+import * as EmployeeRolesSchema from './schemas/employee-roles.schema';
+import * as EmployeeToRolesSchema from './schemas/employee-to-roles.schema';
+import * as EmployeeSchema from './schemas/employee.schema';
+import * as UserRolesSchema from './schemas/user-roles.schema';
 import * as UserSchema from './schemas/user.schema';
 
 const Schemas = {
 	...BranchSchema,
 	...UserSchema,
-	...RoleSchema,
+	...EmployeeRolesSchema,
+	...UserRolesSchema,
 	...EmployeeSchema,
-	...EmployeeToRoles,
+	...EmployeeToRolesSchema,
 };
 
 export class MySQLConnection {

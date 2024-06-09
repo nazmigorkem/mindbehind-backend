@@ -1,6 +1,6 @@
 import { mysqlTable, varchar } from 'drizzle-orm/mysql-core';
-import { Employees } from './employees.schema';
-import { Roles } from './roles.schema';
+import { EmployeeRoles } from './employee-roles.schema';
+import { Employees } from './employee.schema';
 
 export const EmployeeToRoles = mysqlTable('employee_to_roles', {
 	employeeID: varchar('employee_id', {
@@ -12,5 +12,5 @@ export const EmployeeToRoles = mysqlTable('employee_to_roles', {
 		length: 36,
 	})
 		.notNull()
-		.references(() => Roles.id),
+		.references(() => EmployeeRoles.id),
 });

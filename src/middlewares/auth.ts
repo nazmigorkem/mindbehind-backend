@@ -26,24 +26,6 @@ export const userAuth = async (req: Request, res: Response, next: NextFunction) 
 	next();
 };
 
-export const employeerAuth = async (req: Request, res: Response, next: NextFunction) => {
-	if (req.user === undefined) {
-		return ErrorFactory.createUnauthorizedError(res, 'Unauthorized! Please login first.');
-	}
-
-	if (req.params.branchID === undefined) {
-		return ErrorFactory.createBadRequestError(res, 'Branch ID is required!');
-	}
-
-	const { userID: sessionUserID } = req.user!;
-	const sessionEmployee = await getEmployeeWithUserID(req.params.branchID, sessionUserID);
-	if (!sessionEmployee) {
-		return ErrorFactory.createUnauthorizedError(res, 'Unauthorized! You are not an employee of this branch!');
-	}
-
-	next();
-};
-
 export const ownerAuth = async (req: Request, res: Response, next: NextFunction) => {
 	if (req.user === undefined) {
 		return ErrorFactory.createUnauthorizedError(res, 'Unauthorized! Please login first.');
