@@ -4,7 +4,7 @@ type Message = string | string[];
 
 export class ErrorFactory {
 	private static createError(res: Response, code: number, message: Message) {
-		return res.status(code).send({ message, success: false });
+		return res.status(code).send({ data: { message }, success: false });
 	}
 
 	static createNotFoundError(res: Response, message: Message) {
@@ -25,5 +25,9 @@ export class ErrorFactory {
 
 	static createForbiddenError(res: Response, message: Message) {
 		return this.createError(res, 403, message);
+	}
+
+	static createConflictError(res: Response, message: Message) {
+		return this.createError(res, 409, message);
 	}
 }

@@ -30,7 +30,10 @@ CREATE TABLE `users` (
 	`id` varchar(36) NOT NULL,
 	`name` varchar(30),
 	`surname` varchar(30),
-	CONSTRAINT `users_id` PRIMARY KEY(`id`)
+	`email` varchar(100),
+	`password` varchar(32),
+	CONSTRAINT `users_id` PRIMARY KEY(`id`),
+	CONSTRAINT `users_email_unique` UNIQUE(`email`)
 );
 --> statement-breakpoint
 ALTER TABLE `employee_to_roles` ADD CONSTRAINT `employee_to_roles_employee_id_employees_employee_id_fk` FOREIGN KEY (`employee_id`) REFERENCES `employees`(`employee_id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint

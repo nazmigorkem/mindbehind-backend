@@ -12,4 +12,10 @@ export const Users = mysqlTable('users', {
 	surname: varchar('surname', {
 		length: 30,
 	}),
+	email: varchar('email', {
+		length: 100,
+	}).unique(),
+	password: varchar('password', {
+		length: 32,
+	}),
 });

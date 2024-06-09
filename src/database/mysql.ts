@@ -2,6 +2,8 @@ import { drizzle } from 'drizzle-orm/mysql2';
 import { migrate } from 'drizzle-orm/mysql2/migrator';
 import mysql from 'mysql2/promise.js';
 import * as BranchSchema from './schemas/branch.schema';
+import * as EmployeeToRoles from './schemas/employee-to-roles.schema';
+import * as EmployeeSchema from './schemas/employees.schema';
 import * as RoleSchema from './schemas/roles.schema';
 import * as UserSchema from './schemas/user.schema';
 
@@ -9,6 +11,8 @@ const Schemas = {
 	...BranchSchema,
 	...UserSchema,
 	...RoleSchema,
+	...EmployeeSchema,
+	...EmployeeToRoles,
 };
 
 export class MySQLConnection {
