@@ -8,14 +8,16 @@ export const Users = mysqlTable('users', {
 		.primaryKey(),
 	name: varchar('name', {
 		length: 30,
-	}),
+	}).notNull(),
 	surname: varchar('surname', {
 		length: 30,
-	}),
+	}).notNull(),
 	email: varchar('email', {
 		length: 100,
-	}).unique(),
+	})
+		.unique()
+		.notNull(),
 	password: varchar('password', {
 		length: 32,
-	}),
+	}).notNull(),
 });

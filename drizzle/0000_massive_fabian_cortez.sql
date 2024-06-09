@@ -1,10 +1,10 @@
 CREATE TABLE `branches` (
 	`id` varchar(36) NOT NULL,
-	`name` varchar(30),
-	`full_address` varchar(100),
-	`latitude` decimal(10,8),
-	`longitude` decimal(11,8),
-	`phone` varchar(10),
+	`name` varchar(30) NOT NULL,
+	`full_address` varchar(100) NOT NULL,
+	`latitude` decimal(10,8) NOT NULL,
+	`longitude` decimal(11,8) NOT NULL,
+	`phone` varchar(10) NOT NULL,
 	CONSTRAINT `branches_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
@@ -22,16 +22,17 @@ CREATE TABLE `employees` (
 --> statement-breakpoint
 CREATE TABLE `roles` (
 	`id` varchar(36) NOT NULL,
-	`name` varchar(30),
-	CONSTRAINT `roles_id` PRIMARY KEY(`id`)
+	`name` varchar(30) NOT NULL,
+	CONSTRAINT `roles_id` PRIMARY KEY(`id`),
+	CONSTRAINT `roles_name_unique` UNIQUE(`name`)
 );
 --> statement-breakpoint
 CREATE TABLE `users` (
 	`id` varchar(36) NOT NULL,
-	`name` varchar(30),
-	`surname` varchar(30),
-	`email` varchar(100),
-	`password` varchar(32),
+	`name` varchar(30) NOT NULL,
+	`surname` varchar(30) NOT NULL,
+	`email` varchar(100) NOT NULL,
+	`password` varchar(32) NOT NULL,
 	CONSTRAINT `users_id` PRIMARY KEY(`id`),
 	CONSTRAINT `users_email_unique` UNIQUE(`email`)
 );

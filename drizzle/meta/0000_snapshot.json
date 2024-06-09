@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "c65b3d76-005a-4309-bc04-3a98c84d97ef",
+  "id": "cb946717-acb5-4cdd-a5a2-1e37d05901ee",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "branches": {
@@ -18,35 +18,35 @@
           "name": "name",
           "type": "varchar(30)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "full_address": {
           "name": "full_address",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "latitude": {
           "name": "latitude",
           "type": "decimal(10,8)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "longitude": {
           "name": "longitude",
           "type": "decimal(11,8)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "phone": {
           "name": "phone",
           "type": "varchar(10)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
@@ -190,7 +190,7 @@
           "name": "name",
           "type": "varchar(30)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
@@ -204,7 +204,14 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "roles_name_unique": {
+          "name": "roles_name_unique",
+          "columns": [
+            "name"
+          ]
+        }
+      }
     },
     "users": {
       "name": "users",
@@ -220,28 +227,28 @@
           "name": "name",
           "type": "varchar(30)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "surname": {
           "name": "surname",
           "type": "varchar(30)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "email": {
           "name": "email",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "password": {
           "name": "password",
           "type": "varchar(32)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },

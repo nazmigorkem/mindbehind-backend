@@ -8,5 +8,7 @@ export const Roles = mysqlTable('roles', {
 		.primaryKey(),
 	name: varchar('name', {
 		length: 30,
-	}),
+	})
+		.notNull()
+		.unique(),
 });

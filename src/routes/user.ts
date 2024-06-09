@@ -5,11 +5,10 @@ import { ResponseFactory } from 'factory/response-factory';
 import { UserPostBodySchema } from 'types/user';
 import { validateData } from 'util/validate';
 
-const UserRouter = Router();
+const UsersRouter = Router();
 
-UserRouter.get('/:id', async (req, res) => {
+UsersRouter.get('/:id', async (req, res) => {
 	const user = await getUserWithID(req.params.id);
-
 	if (!user) {
 		ErrorFactory.createNotFoundError(res, 'User not found!');
 		return;
@@ -18,9 +17,8 @@ UserRouter.get('/:id', async (req, res) => {
 	ResponseFactory.createOKResponse(res, user);
 });
 
-UserRouter.post('/', validateData(UserPostBodySchema), async (req, res) => {
+UsersRouter.post('/', validateData(UserPostBodySchema), async (req, res) => {
 	const user = await getUserWithEmail(req.body.email);
-
 	if (user) {
 		ErrorFactory.createConflictError(res, 'User already exists with the same email address!');
 		return;
@@ -32,4 +30,4 @@ UserRouter.post('/', validateData(UserPostBodySchema), async (req, res) => {
 	ResponseFactory.createOKResponse(res, 'User created successfully!');
 });
 
-export default UserRouter;
+export default UsersRouter;
