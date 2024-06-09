@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const EnvFileSchema = z.object({
 	JWT_SIGN_KEY: z.string(),
 	MYSQL_URL: z.string(),
+	API_KEY: z.string(),
 	MODE: z.enum(['DEV', 'PROD', 'TEST']),
 });
 

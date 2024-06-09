@@ -2,13 +2,14 @@ import { getUserWithEmail, getUserWithID, insertUser } from 'database/operations
 import { Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import { ResponseFactory } from 'factory/response-factory';
+import { systemAdminAuth } from 'middlewares/auth';
 import { UserPostBodySchema } from 'types/user';
 import { validateData } from 'util/validate';
 
 const UsersRouter = Router();
 
-UsersRouter.get('/:id', async (req, res) => {
-	const user = await getUserWithID(req.params.id);
+UsersRouter.get('/:userID', async (req, res) => {
+	const user = await getUserWithID(req.params.userID);
 	if (!user) {
 		ErrorFactory.createNotFoundError(res, 'User not found!');
 		return;
@@ -17,7 +18,7 @@ UsersRouter.get('/:id', async (req, res) => {
 	ResponseFactory.createOKResponse(res, user);
 });
 
-UsersRouter.post('/', validateData(UserPostBodySchema), async (req, res) => {
+UsersRouter.post('/', systemAdminAuth, validateData(UserPostBodySchema), async (req, res) => {
 	const user = await getUserWithEmail(req.body.email);
 	if (user) {
 		ErrorFactory.createConflictError(res, 'User already exists with the same email address!');
@@ -26,8 +27,8 @@ UsersRouter.post('/', validateData(UserPostBodySchema), async (req, res) => {
 
 	// todo: hash password
 
-	await insertUser(req.body);
-	ResponseFactory.createOKResponse(res, 'User created successfully!');
+	const userID = await insertUser(req.body);
+	ResponseFactory.createOKResponse(res, { userID });
 });
 
 export default UsersRouter;

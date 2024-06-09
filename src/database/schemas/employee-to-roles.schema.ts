@@ -7,7 +7,7 @@ export const EmployeeToRoles = mysqlTable('employee_to_roles', {
 		length: 36,
 	})
 		.notNull()
-		.references(() => Employees.employeeID),
+		.references(() => Employees.employeeID, { onDelete: 'cascade' }),
 	roleID: varchar('role_id', {
 		length: 36,
 	})

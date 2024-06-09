@@ -1,35 +1,54 @@
 import { deleteBranch, getBranchWithID, insertBranch, updateBranch } from 'database/operations/branch';
-import { addRoleToEmployee, getEmployeeWithEmployeeID, insertEmployee } from 'database/operations/employees';
+import { addRoleToEmployee, getEmployeeWithEmployeeID, getEmployeeWithUserID, insertEmployee } from 'database/operations/employees';
 import { getRoleWithName } from 'database/operations/roles';
 import { getUserWithID } from 'database/operations/user';
 import { Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import { ResponseFactory } from 'factory/response-factory';
+import { employeerAuth, ownerAuth } from 'middlewares/auth';
 import { BranchPostBodySchema, BranchPutBodySchema } from 'types/branch';
 import { EmployeePostBodySchema, EmployeeRolePostBodySchema } from 'types/employee';
 import { validateData } from 'util/validate';
 
 const BranchesRouter = Router();
 
-BranchesRouter.get('/:id', async (req, res) => {
-	const result = await getBranchWithID(req.params.id);
+BranchesRouter.get('/:branchID', employeerAuth, async (req, res) => {
+	const result = await getBranchWithID(req.params.branchID);
 	if (!result) {
 		return ErrorFactory.createNotFoundError(res, 'Branch not found!');
+	}
+
+	const { userID } = req.user!;
+	const user = await getEmployeeWithUserID(req.params.branchID, userID);
+	if (!user) {
+		return ErrorFactory.createUnauthorizedError(res, 'Unauthorized! You are not an employee of this branch!');
 	}
 
 	return ResponseFactory.createOKResponse(res, result);
 });
 
 BranchesRouter.post('/', validateData(BranchPostBodySchema), async (req, res) => {
-	const result = await insertBranch(req.body);
-	if (!result) {
-		return ErrorFactory.createNotFoundError(res, 'Branch not found!');
+	const { userID } = req.user!;
+	const branchID = await insertBranch(req.body);
+	const employeeID = await insertEmployee({
+		userID: userID,
+		branchID: branchID,
+	});
+
+	const ownerRole = await getRoleWithName('owner');
+	if (!ownerRole) {
+		return ErrorFactory.createInternalServerError(res, 'Something went wrong while adding the role!');
 	}
 
-	return ResponseFactory.createOKResponse(res, 'Branch created successfully!');
+	await addRoleToEmployee({
+		employeeID: employeeID,
+		roleID: ownerRole.id,
+	});
+
+	return ResponseFactory.createOKResponse(res, { branchID, employeeID });
 });
 
-BranchesRouter.put('/:id', validateData(BranchPutBodySchema), async (req, res) => {
+BranchesRouter.put('/:branchID', ownerAuth, validateData(BranchPutBodySchema), async (req, res) => {
 	const branch = await getBranchWithID(req.params.id);
 	if (!branch) {
 		return ErrorFactory.createNotFoundError(res, 'Branch not found!');
@@ -40,18 +59,18 @@ BranchesRouter.put('/:id', validateData(BranchPutBodySchema), async (req, res) =
 	return ResponseFactory.createOKResponse(res, 'Branch updated successfully!');
 });
 
-BranchesRouter.delete('/:id', async (req, res) => {
-	const branch = await getBranchWithID(req.params.id);
+BranchesRouter.delete('/:branchID', ownerAuth, async (req, res) => {
+	const branch = await getBranchWithID(req.params.branchID);
 	if (!branch) {
 		return ErrorFactory.createNotFoundError(res, 'Branch not found!');
 	}
 
-	await deleteBranch(req.params.id);
+	await deleteBranch(req.params.branchID);
 
 	return ResponseFactory.createOKResponse(res, 'Branch deleted successfully!');
 });
 
-BranchesRouter.get('/:branchID/employees/:employeeID', async (req, res) => {
+BranchesRouter.get('/:branchID/employees/:employeeID', employeerAuth, async (req, res) => {
 	const branch = await getBranchWithID(req.params.branchID);
 	if (!branch) {
 		return ErrorFactory.createNotFoundError(res, 'Branch not found!');
@@ -65,7 +84,7 @@ BranchesRouter.get('/:branchID/employees/:employeeID', async (req, res) => {
 	return ResponseFactory.createOKResponse(res, employee);
 });
 
-BranchesRouter.post('/:branchID/employees', validateData(EmployeePostBodySchema), async (req, res) => {
+BranchesRouter.post('/:branchID/employees', ownerAuth, validateData(EmployeePostBodySchema), async (req, res) => {
 	const branch = await getBranchWithID(req.params.branchID);
 	if (!branch) {
 		return ErrorFactory.createNotFoundError(res, 'Branch not found!');
@@ -76,15 +95,15 @@ BranchesRouter.post('/:branchID/employees', validateData(EmployeePostBodySchema)
 		return ErrorFactory.createNotFoundError(res, 'User not found!');
 	}
 
-	await insertEmployee({
+	const employeeID = await insertEmployee({
 		userID: req.body.userID,
 		branchID: req.params.branchID,
 	});
 
-	return ResponseFactory.createOKResponse(res, 'Employee created successfully!');
+	return ResponseFactory.createOKResponse(res, { employeeID });
 });
 
-BranchesRouter.post('/:branchID/employees/:employeeID/roles', validateData(EmployeeRolePostBodySchema), async (req, res) => {
+BranchesRouter.post('/:branchID/employees/:employeeID/roles', ownerAuth, validateData(EmployeeRolePostBodySchema), async (req, res) => {
 	const employee = await getEmployeeWithEmployeeID(req.params.employeeID);
 	if (!employee || employee.branchID !== req.params.branchID) {
 		return ErrorFactory.createNotFoundError(res, 'Employee not found!');

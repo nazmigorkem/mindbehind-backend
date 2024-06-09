@@ -12,10 +12,10 @@ export const Employees = mysqlTable('employees', {
 		length: 36,
 	})
 		.notNull()
-		.references(() => Users.id),
+		.references(() => Users.id, { onDelete: 'cascade' }),
 	branchID: varchar('branch_id', {
 		length: 36,
 	})
 		.notNull()
-		.references(() => Branches.id),
+		.references(() => Branches.id, { onDelete: 'cascade' }),
 });

@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "cb946717-acb5-4cdd-a5a2-1e37d05901ee",
+  "id": "1b58fede-4cde-4c26-b6e7-c0770c3edbec",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "branches": {
@@ -92,7 +92,7 @@
           "columnsTo": [
             "employee_id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "employee_to_roles_role_id_roles_id_fk": {
@@ -149,7 +149,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "employees_branch_id_branches_id_fk": {
@@ -162,7 +162,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

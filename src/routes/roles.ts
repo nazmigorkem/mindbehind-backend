@@ -7,8 +7,8 @@ import { validateData } from 'util/validate';
 
 const RolesRouter = Router();
 
-RolesRouter.get('/:id', async (req, res) => {
-	const role = await getRoleWithRoleID(req.params.id);
+RolesRouter.get('/:roleID', async (req, res) => {
+	const role = await getRoleWithRoleID(req.params.roleID);
 	if (!role) {
 		return ErrorFactory.createNotFoundError(res, 'Role not found!');
 	}

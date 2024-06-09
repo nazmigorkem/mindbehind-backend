@@ -1,36 +1,48 @@
 import { MySQLConnection } from 'database/mysql';
 import { EmployeeToRoles } from 'database/schemas/employee-to-roles.schema';
 import { Employees } from 'database/schemas/employees.schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
+import { getRoleWithName } from './roles';
 
 export async function getEmployeeWithEmployeeID(id: string) {
-	return await (
-		await MySQLConnection.getInstance()
-	).query.Employees.findFirst({
+	return await MySQLConnection.getInstance().query.Employees.findFirst({
 		where: eq(Employees.employeeID, id),
 	});
 }
 
-export async function getEmployeeWithUserID(id: string) {
-	return await (
-		await MySQLConnection.getInstance()
-	).query.Employees.findFirst({
-		where: eq(Employees.userID, id),
+export async function getEmployeeWithUserID(branchID: string, userID: string) {
+	return await MySQLConnection.getInstance().query.Employees.findFirst({
+		where: and(eq(Employees.userID, userID), eq(Employees.branchID, branchID)),
 	});
 }
 
+export async function employeeHasNamedRole(employeeID: string, roleName: string) {
+	const role = await getRoleWithName(roleName);
+	if (!role) {
+		return false;
+	}
+
+	return !!(await MySQLConnection.getInstance().query.EmployeeToRoles.findFirst({
+		where: and(eq(EmployeeToRoles.employeeID, employeeID), eq(EmployeeToRoles.roleID, role.id)),
+	}));
+}
+
 export async function insertEmployee(data: typeof Employees.$inferInsert) {
-	return await (await MySQLConnection.getInstance()).insert(Employees).values(data);
+	const employeeID = crypto.randomUUID();
+	await MySQLConnection.getInstance()
+		.insert(Employees)
+		.values({ ...data, employeeID });
+	return employeeID;
 }
 
 export async function deleteEmployee(id: string) {
-	return await (await MySQLConnection.getInstance()).delete(Employees).where(eq(Employees.employeeID, id));
+	return await MySQLConnection.getInstance().delete(Employees).where(eq(Employees.employeeID, id));
 }
 
 export async function updateEmployee(id: string, data: Omit<typeof Employees.$inferSelect, 'employeeID'>) {
-	return await (await MySQLConnection.getInstance()).update(Employees).set(data).where(eq(Employees.employeeID, id));
+	return await MySQLConnection.getInstance().update(Employees).set(data).where(eq(Employees.employeeID, id));
 }
 
 export async function addRoleToEmployee(data: typeof EmployeeToRoles.$inferInsert) {
-	return await (await MySQLConnection.getInstance()).insert(EmployeeToRoles).values(data);
+	return await MySQLConnection.getInstance().insert(EmployeeToRoles).values(data);
 }
