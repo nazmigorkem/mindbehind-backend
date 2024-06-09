@@ -1,0 +1,10 @@
+FROM node:20.12.1-alpine
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+WORKDIR /app
+COPY . /app
+RUN pnpm install
+ENV MODE "DEV"
+EXPOSE 3000
+CMD pnpm dev --legacy-watch

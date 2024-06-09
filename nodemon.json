@@ -1,0 +1,7 @@
+{
+	"watch": ["src"],
+	"ext": "ts,json",
+	"ignore": [],
+	"exec": "tsx ./src/index.ts ",
+	"pollingInterval": 1000
+}

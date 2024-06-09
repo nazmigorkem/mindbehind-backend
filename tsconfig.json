@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"resolveJsonModule": true,
+		"moduleResolution": "NodeNext",
+		"target": "ESNext",
+		"module": "NodeNext",
+		"outDir": "./build",
+		"rootDir": "./src",
+		"importHelpers": true,
+		"strict": true,
+		"baseUrl": "./src",
+		"sourceMap": true,
+		"removeComments": true,
+		"paths": {},
+		"typeRoots": ["node_modules/@types"],
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true
+	},
+	"ts-node": {
+		"esm": true
+	},
+	"exclude": ["node_modules"]
+}

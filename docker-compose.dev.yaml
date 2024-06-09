@@ -1,0 +1,16 @@
+version: '3'
+services:
+    mindbehind_backend:
+        restart: always
+        container_name: mindbehind_dev
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes:
+            - ./src:/app/src
+            - ./package.json:/app/package.json
+            - ./tsconfig.json:/app/tsconfig.json
+        ports:
+            - '3000:3000'
+        env_file:
+            - ./env/dev.env
