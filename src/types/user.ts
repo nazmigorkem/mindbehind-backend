@@ -6,3 +6,5 @@ export const UserPostBodySchema = z.object({
 	name: z.string().max(30),
 	surname: z.string().max(30),
 });
+
+export const UserPutBodySchema = UserPostBodySchema.partial();

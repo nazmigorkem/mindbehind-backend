@@ -5,6 +5,12 @@ import { eq } from 'drizzle-orm';
 export async function getUserWithID(id: string) {
 	return await MySQLConnection.getInstance().query.Users.findFirst({
 		where: eq(Users.id, id),
+		columns: {
+			id: true,
+			email: true,
+			name: true,
+			surname: true,
+		},
 	});
 }
 

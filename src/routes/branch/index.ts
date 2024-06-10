@@ -27,7 +27,7 @@ BranchesRouter.get('/:branchID', employeeAuth, async (req, res) => {
 	return ResponseFactory.createOKResponse(res, result);
 });
 
-BranchesRouter.post('/', validateData(BranchPostBodySchema), async (req, res) => {
+BranchesRouter.post('/', ownerAuth, validateData(BranchPostBodySchema), async (req, res) => {
 	const branchID = await insertBranch(req.body);
 
 	return ResponseFactory.createOKResponse(res, { branchID });

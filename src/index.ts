@@ -9,7 +9,6 @@ import AuthRouter from 'routes/auth';
 import BranchesRouter from 'routes/branch';
 import EmployeeRolesRouter from 'routes/employee-roles';
 import UsersRouter from 'routes/user';
-import UserRolesRouter from 'routes/user-roles';
 import { EnvFile } from 'types/env';
 
 const app = express();
@@ -20,7 +19,6 @@ app.use(express.json());
 app.use('/branches', userAuth, BranchesRouter);
 app.use('/users', UsersRouter);
 app.use('/employee-roles', userAuth, EmployeeRolesRouter);
-app.use('/user-roles', userAuth, UserRolesRouter);
 app.use('/auth', AuthRouter);
 
 app.listen(3000, async () => {

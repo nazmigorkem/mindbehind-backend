@@ -15,7 +15,13 @@ export async function getEmployeeRoleWithName(name: string) {
 	});
 }
 
-export async function employeeHasNamedRole(employeeID: string, roleName: string) {
+export async function doesEmployeeHaveRoleWithID(employeeID: string, roleID: string) {
+	return !!(await MySQLConnection.getInstance().query.EmployeeToRoles.findFirst({
+		where: and(eq(EmployeeToRoles.employeeID, employeeID), eq(EmployeeToRoles.roleID, roleID)),
+	}));
+}
+
+export async function doesEmployeeHaveNamedRole(employeeID: string, roleName: string) {
 	const role = await getEmployeeRoleWithName(roleName);
 	if (!role) {
 		return false;
@@ -28,6 +34,12 @@ export async function employeeHasNamedRole(employeeID: string, roleName: string)
 
 export async function insertRoleToEmployee(data: typeof EmployeeToRoles.$inferInsert) {
 	return await MySQLConnection.getInstance().insert(EmployeeToRoles).values(data);
+}
+
+export async function deleteRoleFromEmployee(employeeID: string, roleID: string) {
+	return await MySQLConnection.getInstance()
+		.delete(EmployeeToRoles)
+		.where(and(eq(EmployeeToRoles.employeeID, employeeID), eq(EmployeeToRoles.roleID, roleID)));
 }
 
 export async function insertEmployeeRole(data: typeof EmployeeRoles.$inferInsert) {

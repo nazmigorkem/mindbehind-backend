@@ -1,9 +1,16 @@
-import { getEmployeeRoleWithName, getEmployeeRoleWithRoleID, insertEmployeeRole, insertRoleToEmployee } from 'database/operations/employee-roles';
+import {
+	deleteRoleFromEmployee,
+	doesEmployeeHaveRoleWithID,
+	getEmployeeRoleWithName,
+	getEmployeeRoleWithRoleID,
+	insertEmployeeRole,
+	insertRoleToEmployee,
+} from 'database/operations/employee-roles';
 import { Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import { ResponseFactory } from 'factory/response-factory';
 import { employeeAuth, ownerAuth } from 'middlewares/auth';
-import { AddRolePostBodySchema, RolePostBodySchema } from 'types/roles';
+import { RolePostBodySchema } from 'types/roles';
 import { validateData } from 'util/validate';
 
 const EmployeeRolesRouter = Router();
@@ -17,7 +24,7 @@ EmployeeRolesRouter.get('/:roleID', employeeAuth, async (req, res) => {
 	return ResponseFactory.createOKResponse(res, role);
 });
 
-EmployeeRolesRouter.post('/', employeeAuth, validateData(RolePostBodySchema), async (req, res) => {
+EmployeeRolesRouter.post('/', ownerAuth, validateData(RolePostBodySchema), async (req, res) => {
 	const role = await getEmployeeRoleWithName(req.body.name);
 	if (role) {
 		return ErrorFactory.createConflictError(res, 'Role already exists with the same name!');
@@ -28,19 +35,35 @@ EmployeeRolesRouter.post('/', employeeAuth, validateData(RolePostBodySchema), as
 	return ResponseFactory.createOKResponse(res, { roleID });
 });
 
-EmployeeRolesRouter.post('/:employeeID', ownerAuth, validateData(AddRolePostBodySchema), async (req, res) => {
-	const role = await getEmployeeRoleWithName(req.body.roleName);
+EmployeeRolesRouter.post('/:employeeID/roles/:roleID', ownerAuth, async (req, res) => {
+	const employeeID = req.params.employeeID;
+	const roleID = req.params.roleID;
+	const doesEmployeeHaveRole = await doesEmployeeHaveRoleWithID(employeeID, roleID);
 
-	if (!role) {
-		return ErrorFactory.createNotFoundError(res, 'Role not found!');
+	if (doesEmployeeHaveRole) {
+		return ErrorFactory.createNotFoundError(res, 'Employee already has the role!');
 	}
 
 	await insertRoleToEmployee({
-		employeeID: req.params.employeeID,
-		roleID: role.id,
+		employeeID,
+		roleID,
 	});
 
-	return ResponseFactory.createOKResponse(res, { roleID: role.id });
+	return ResponseFactory.createOKResponse(res, 'Role added to employee successfully!');
+});
+
+EmployeeRolesRouter.delete('/:employeeID/roles/:roleID', ownerAuth, async (req, res) => {
+	const employeeID = req.params.employeeID;
+	const roleID = req.params.roleID;
+	const doesEmployeeHaveRole = await doesEmployeeHaveRoleWithID(employeeID, roleID);
+
+	if (!doesEmployeeHaveRole) {
+		return ErrorFactory.createNotFoundError(res, 'Employee does not have the role!');
+	}
+
+	await deleteRoleFromEmployee(employeeID, roleID);
+
+	return ResponseFactory.createOKResponse(res, 'Role deleted from employee successfully!');
 });
 
 export default EmployeeRolesRouter;

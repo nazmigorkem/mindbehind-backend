@@ -1,17 +1,17 @@
 import { getUserWithID } from 'database/operations/user';
-import { userHasNamedRole } from 'database/operations/user-roles';
+import { doesUserHaveNamedRole } from 'database/operations/user-roles';
 import { NextFunction, Request, Response } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 import { EnvFile } from 'types/env';
 
 export const userAuth = async (req: Request, res: Response, next: NextFunction) => {
-	const { token } = req.cookies;
-	if (!token) {
+	const { authorization } = req.headers;
+	if (!authorization) {
 		return ErrorFactory.createUnauthorizedError(res, 'Token is missing. Please login first.');
 	} else {
 		try {
-			const userData = jsonwebtoken.verify(token, EnvFile.JWT_SIGN_KEY) as JwtPayload & { userID: string; iat: number; exp: number };
+			const userData = jsonwebtoken.verify(authorization, EnvFile.JWT_SIGN_KEY) as JwtPayload & { userID: string; iat: number; exp: number };
 			const user = await getUserWithID(userData.userID);
 			if (!user) {
 				return ErrorFactory.createUnauthorizedError(res, 'Corrupted token! Please login again.');
@@ -31,14 +31,9 @@ export const employeeAuth = async (req: Request, res: Response, next: NextFuncti
 		return ErrorFactory.createUnauthorizedError(res, 'Unauthorized! Please login first.');
 	}
 
-	if (req.params.branchID === undefined) {
-		return ErrorFactory.createBadRequestError(res, 'Branch ID is required!');
-	}
+	const { userID } = req.user!;
 
-	const user = req.user!;
-
-	const hasOwnerRole = await userHasNamedRole(user.userID, 'employee');
-	if (!hasOwnerRole) {
+	if (!(await doesUserHaveNamedRole(userID, 'employee')) && !(await doesUserHaveNamedRole(userID, 'owner'))) {
 		return ErrorFactory.createForbiddenError(res, 'Forbidden! You are not an employee of this company!');
 	}
 
@@ -50,14 +45,9 @@ export const ownerAuth = async (req: Request, res: Response, next: NextFunction)
 		return ErrorFactory.createUnauthorizedError(res, 'Unauthorized! Please login first.');
 	}
 
-	if (req.params.branchID === undefined) {
-		return ErrorFactory.createBadRequestError(res, 'Branch ID is required!');
-	}
+	const { userID } = req.user!;
 
-	const user = req.user!;
-
-	const hasOwnerRole = await userHasNamedRole(user.userID, 'owner');
-	if (!hasOwnerRole) {
+	if (!(await doesUserHaveNamedRole(userID, 'owner'))) {
 		return ErrorFactory.createForbiddenError(res, 'Forbidden! You are not an owner of this company!');
 	}
 
