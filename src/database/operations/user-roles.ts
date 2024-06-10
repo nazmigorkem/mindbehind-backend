@@ -1,6 +1,6 @@
-import { MySQLConnection } from 'database/mysql';
-import { UserRoles } from 'database/schemas/user-roles.schema';
-import { UserToRoles } from 'database/schemas/user-to-roles.schema';
+import { MySQLConnection } from '#database/mysql.js';
+import { UserRoles } from '#database/schemas/user-roles.schema.js';
+import { UserToRoles } from '#database/schemas/user-to-roles.schema.js';
 import { and, eq } from 'drizzle-orm';
 
 export async function getUserRoles() {

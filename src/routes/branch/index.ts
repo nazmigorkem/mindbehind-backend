@@ -1,12 +1,12 @@
-import { deleteBranch, getBranchWithID, getBranches, insertBranch, updateBranch } from 'database/operations/branch';
+import { deleteBranch, getBranchWithID, getBranches, insertBranch, updateBranch } from '#database/operations/branch.js';
+import { ErrorFactory } from '#factory/error-factory.js';
+import { ResponseFactory } from '#factory/response-factory.js';
+import { employeeAuth, ownerAuth } from '#middlewares/auth.js';
+import { BranchPostBodySchema, BranchPutBodySchema } from '#types/branch.js';
+import { validateData } from '#util/validate.js';
 import { Router } from 'express';
-import { ErrorFactory } from 'factory/error-factory';
-import { ResponseFactory } from 'factory/response-factory';
-import { employeeAuth, ownerAuth } from 'middlewares/auth';
-import { BranchPostBodySchema, BranchPutBodySchema } from 'types/branch';
-import { validateData } from 'util/validate';
-import EmployeesRouter from './employee';
-import EmployeeRolesRouter from './roles';
+import EmployeesRouter from './employee/index.js';
+import EmployeeRolesRouter from './roles/index.js';
 
 const BranchesRouter = Router();
 

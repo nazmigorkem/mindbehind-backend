@@ -1,18 +1,18 @@
-import { getBranchWithID } from 'database/operations/branch';
+import { getBranchWithID } from '#database/operations/branch.js';
 import {
 	deleteRoleFromEmployee,
 	doesEmployeeHaveRoleWithID,
 	getEmployeeRoleWithRoleID,
 	insertRoleToEmployee,
-} from 'database/operations/employee-roles';
-import { getEmployeeWithEmployeeID, insertEmployee } from 'database/operations/employees';
-import { getUserWithID } from 'database/operations/user';
+} from '#database/operations/employee-roles.js';
+import { getEmployeeWithEmployeeID, insertEmployee } from '#database/operations/employees.js';
+import { getUserWithID } from '#database/operations/user.js';
+import { ErrorFactory } from '#factory/error-factory.js';
+import { ResponseFactory } from '#factory/response-factory.js';
+import { employeeAuth, ownerAuth } from '#middlewares/auth.js';
+import { EmployeePostBodySchema } from '#types/employee.js';
+import { validateData } from '#util/validate.js';
 import { Request, Router } from 'express';
-import { ErrorFactory } from 'factory/error-factory';
-import { ResponseFactory } from 'factory/response-factory';
-import { employeeAuth, ownerAuth } from 'middlewares/auth';
-import { EmployeePostBodySchema } from 'types/employee';
-import { validateData } from 'util/validate';
 
 const EmployeesRouter = Router();
 

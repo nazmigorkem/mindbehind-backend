@@ -1,5 +1,5 @@
-import { MySQLConnection } from 'database/mysql';
-import { Branches } from 'database/schemas/branch.schema';
+import { MySQLConnection } from '#database/mysql.js';
+import { Branches } from '#database/schemas/branch.schema.js';
 import { eq } from 'drizzle-orm';
 
 export async function getBranches() {

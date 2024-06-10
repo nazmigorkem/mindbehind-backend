@@ -1,6 +1,6 @@
 import { mysqlTable, varchar } from 'drizzle-orm/mysql-core';
-import { Branches } from './branch.schema';
-import { Users } from './user.schema';
+import { Branches } from './branch.schema.js';
+import { Users } from './user.schema.js';
 
 export const Employees = mysqlTable('employees', {
 	employeeID: varchar('employee_id', {

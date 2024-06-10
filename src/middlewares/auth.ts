@@ -1,9 +1,9 @@
-import { getUserWithID } from 'database/operations/user';
-import { doesUserHaveNamedRole } from 'database/operations/user-roles';
+import { doesUserHaveNamedRole } from '#database/operations/user-roles.js';
+import { getUserWithID } from '#database/operations/user.js';
+import { ErrorFactory } from '#factory/error-factory.js';
+import { EnvFile } from '#types/env.js';
 import { NextFunction, Request, Response } from 'express';
-import { ErrorFactory } from 'factory/error-factory';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
-import { EnvFile } from 'types/env';
 
 export const userAuth = async (req: Request, res: Response, next: NextFunction) => {
 	const { authorization } = req.headers;

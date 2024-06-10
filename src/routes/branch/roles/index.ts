@@ -5,14 +5,14 @@ import {
 	getEmployeeRoles,
 	insertEmployeeRole,
 	updateEmployeeRole,
-} from 'database/operations/employee-roles';
-import { getEmployeeWithRoleID } from 'database/operations/employees';
+} from '#database/operations/employee-roles.js';
+import { getEmployeeWithRoleID } from '#database/operations/employees.js';
+import { ErrorFactory } from '#factory/error-factory.js';
+import { ResponseFactory } from '#factory/response-factory.js';
+import { employeeAuth, ownerAuth } from '#middlewares/auth.js';
+import { RolePostBodySchema, RolePutBodySchema } from '#types/roles.js';
+import { validateData } from '#util/validate.js';
 import { Router } from 'express';
-import { ErrorFactory } from 'factory/error-factory';
-import { ResponseFactory } from 'factory/response-factory';
-import { employeeAuth, ownerAuth } from 'middlewares/auth';
-import { RolePostBodySchema, RolePutBodySchema } from 'types/roles';
-import { validateData } from 'util/validate';
 
 const EmployeeRolesRouter = Router();
 

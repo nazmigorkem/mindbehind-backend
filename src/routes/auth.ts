@@ -1,12 +1,12 @@
+import { getUserWithEmail } from '#database/operations/user.js';
+import { ErrorFactory } from '#factory/error-factory.js';
+import { ResponseFactory } from '#factory/response-factory.js';
+import { AuthPostBodySchema } from '#types/auth.js';
+import { EnvFile } from '#types/env.js';
+import { validateData } from '#util/validate.js';
 import crypto from 'crypto';
-import { getUserWithEmail } from 'database/operations/user';
 import { Router } from 'express';
-import { ErrorFactory } from 'factory/error-factory';
-import { ResponseFactory } from 'factory/response-factory';
 import jsonwebtoken from 'jsonwebtoken';
-import { AuthPostBodySchema } from 'types/auth';
-import { EnvFile } from 'types/env';
-import { validateData } from 'util/validate';
 
 const AuthRouter = Router();
 

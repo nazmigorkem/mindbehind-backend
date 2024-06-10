@@ -1,10 +1,11 @@
 {
 	"name": "mindbehind-case",
 	"version": "1.0.0",
-	"description": "",
+	"type": "module",
 	"scripts": {
 		"build": "tsc",
-		"dev": "nodemon"
+		"dev": "nodemon",
+		"prod": "node ./build/index.js"
 	},
 	"keywords": [],
 	"author": "",
@@ -28,5 +29,13 @@
 		"nodemon": "^3.1.3",
 		"tsx": "^4.14.1",
 		"typescript": "^5.4.5"
+	},
+	"imports": {
+		"#database/*": "./build/database/*",
+		"#factory/*": "./build/factory/*",
+		"#middlewares/*": "./build/middlewares/*",
+		"#routes/*": "./build/routes/*",
+		"#types/*": "./build/types/*",
+		"#util/*": "./build/util/*"
 	}
 }

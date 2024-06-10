@@ -1,12 +1,12 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise.js';
-import * as BranchSchema from './schemas/branch.schema';
-import * as EmployeeRolesSchema from './schemas/employee-roles.schema';
-import * as EmployeeToRolesSchema from './schemas/employee-to-roles.schema';
-import * as EmployeeSchema from './schemas/employee.schema';
-import * as UserRolesSchema from './schemas/user-roles.schema';
-import * as UserToRoles from './schemas/user-to-roles.schema';
-import * as UserSchema from './schemas/user.schema';
+import * as BranchSchema from './schemas/branch.schema.js';
+import * as EmployeeRolesSchema from './schemas/employee-roles.schema.js';
+import * as EmployeeToRolesSchema from './schemas/employee-to-roles.schema.js';
+import * as EmployeeSchema from './schemas/employee.schema.js';
+import * as UserRolesSchema from './schemas/user-roles.schema.js';
+import * as UserToRoles from './schemas/user-to-roles.schema.js';
+import * as UserSchema from './schemas/user.schema.js';
 
 const Schemas = {
 	...BranchSchema,

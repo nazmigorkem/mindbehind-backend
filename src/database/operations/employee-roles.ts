@@ -1,6 +1,6 @@
-import { MySQLConnection } from 'database/mysql';
-import { EmployeeRoles } from 'database/schemas/employee-roles.schema';
-import { EmployeeToRoles } from 'database/schemas/employee-to-roles.schema';
+import { MySQLConnection } from '#database/mysql.js';
+import { EmployeeRoles } from '#database/schemas/employee-roles.schema.js';
+import { EmployeeToRoles } from '#database/schemas/employee-to-roles.schema.js';
 import { and, eq } from 'drizzle-orm';
 
 export async function getEmployeeRoles() {

@@ -1,5 +1,5 @@
+import { ErrorFactory } from '#factory/error-factory.js';
 import { NextFunction, Request, Response } from 'express';
-import { ErrorFactory } from 'factory/error-factory';
 import z, { ZodError, ZodIssue } from 'zod';
 
 export function validateData(schema: z.ZodObject<any, any>) {

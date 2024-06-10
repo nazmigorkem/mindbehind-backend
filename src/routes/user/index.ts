@@ -1,13 +1,13 @@
+import { deleteRoleFromUser, doesUserHaveRoleWithID, getUserRolesWithUserID, insertRoleToUser } from '#database/operations/user-roles.js';
+import { deleteUser, getUserWithEmail, getUserWithID, insertUser, updateUser } from '#database/operations/user.js';
+import { ErrorFactory } from '#factory/error-factory.js';
+import { ResponseFactory } from '#factory/response-factory.js';
+import { systemAdminAuth, userAuth } from '#middlewares/auth.js';
+import { UserPostBodySchema, UserPutBodySchema } from '#types/user.js';
+import { validateData } from '#util/validate.js';
 import crypto from 'crypto';
-import { deleteUser, getUserWithEmail, getUserWithID, insertUser, updateUser } from 'database/operations/user';
-import { deleteRoleFromUser, doesUserHaveRoleWithID, getUserRolesWithUserID, insertRoleToUser } from 'database/operations/user-roles';
 import { Router } from 'express';
-import { ErrorFactory } from 'factory/error-factory';
-import { ResponseFactory } from 'factory/response-factory';
-import { systemAdminAuth, userAuth } from 'middlewares/auth';
-import { UserPostBodySchema, UserPutBodySchema } from 'types/user';
-import { validateData } from 'util/validate';
-import UserRolesRouter from './roles';
+import UserRolesRouter from './roles/index.js';
 
 const UsersRouter = Router();
 

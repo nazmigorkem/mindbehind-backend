@@ -1,6 +1,6 @@
-import { MySQLConnection } from 'database/mysql';
-import { UserToRoles } from 'database/schemas/user-to-roles.schema';
-import { Users } from 'database/schemas/user.schema';
+import { MySQLConnection } from '#database/mysql.js';
+import { UserToRoles } from '#database/schemas/user-to-roles.schema.js';
+import { Users } from '#database/schemas/user.schema.js';
 import { eq } from 'drizzle-orm';
 
 export async function getUserWithID(id: string) {

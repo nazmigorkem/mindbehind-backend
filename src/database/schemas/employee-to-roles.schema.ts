@@ -1,6 +1,6 @@
 import { mysqlTable, varchar } from 'drizzle-orm/mysql-core';
-import { EmployeeRoles } from './employee-roles.schema';
-import { Employees } from './employee.schema';
+import { EmployeeRoles } from './employee-roles.schema.js';
+import { Employees } from './employee.schema.js';
 
 export const EmployeeToRoles = mysqlTable('employee_to_roles', {
 	employeeID: varchar('employee_id', {

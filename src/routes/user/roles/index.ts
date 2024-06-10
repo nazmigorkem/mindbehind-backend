@@ -1,4 +1,3 @@
-import { getUserWithRoleID } from 'database/operations/user';
 import {
 	deleteUserRole,
 	getUserRoleWithName,
@@ -6,12 +5,13 @@ import {
 	getUserRoles,
 	insertUserRole,
 	updateUserRole,
-} from 'database/operations/user-roles';
+} from '#database/operations/user-roles.js';
+import { getUserWithRoleID } from '#database/operations/user.js';
+import { ErrorFactory } from '#factory/error-factory.js';
+import { ResponseFactory } from '#factory/response-factory.js';
+import { RolePostBodySchema, RolePutBodySchema } from '#types/roles.js';
+import { validateData } from '#util/validate.js';
 import { Router } from 'express';
-import { ErrorFactory } from 'factory/error-factory';
-import { ResponseFactory } from 'factory/response-factory';
-import { RolePostBodySchema, RolePutBodySchema } from 'types/roles';
-import { validateData } from 'util/validate';
 
 const UserRolesRouter = Router();
 

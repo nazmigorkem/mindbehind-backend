@@ -1,15 +1,15 @@
+import { MySQLConnection } from '#database/mysql.js';
+import { getUserRoleWithName } from '#database/operations/user-roles.js';
+import { UserRoles } from '#database/schemas/user-roles.schema.js';
+import { userAuth } from '#middlewares/auth.js';
+import AuthRouter from '#routes/auth.js';
+import BranchesRouter from '#routes/branch/index.js';
+import UsersRouter from '#routes/user/index.js';
+import { EnvFile } from '#types/env.js';
 import cookieParser from 'cookie-parser';
-import { MySQLConnection } from 'database/mysql';
-import { getUserRoleWithName } from 'database/operations/user-roles';
-import { UserRoles } from 'database/schemas/user-roles.schema';
 import { migrate } from 'drizzle-orm/mysql2/migrator';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
-import { userAuth } from 'middlewares/auth';
-import AuthRouter from 'routes/auth';
-import BranchesRouter from 'routes/branch';
-import UsersRouter from 'routes/user';
-import { EnvFile } from 'types/env';
 
 const app = express();
 

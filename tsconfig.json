@@ -11,7 +11,14 @@
 		"baseUrl": "./src",
 		"sourceMap": true,
 		"removeComments": true,
-		"paths": {},
+		"paths": {
+			"#database/*": ["database/*"],
+			"#factory/*": ["factory/*"],
+			"#middlewares/*": ["middlewares/*"],
+			"#routes/*": ["routes/*"],
+			"#types/*": ["types/*"],
+			"#util/*": ["util/*"]
+		},
 		"typeRoots": ["node_modules/@types"],
 		"esModuleInterop": true,
 		"skipLibCheck": true,
