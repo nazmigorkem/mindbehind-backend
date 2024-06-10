@@ -78,9 +78,10 @@ UserRolesRouter.delete('/:roleID', async (req, res) => {
 		return ErrorFactory.createForbiddenError(res, 'Owner or employee role cannot be deleted.');
 	}
 
+	// No need for role existence check. If user does not have it then it is already deleted or non-existent.
 	const userWithRole = await getUserWithRoleID(roleID);
 	if (userWithRole) {
-		return ErrorFactory.createConflictError(res, 'Role is assigned to a user!');
+		return ErrorFactory.createConflictError(res, 'This role is assigned to a user!');
 	}
 
 	await deleteUserRole(roleID);

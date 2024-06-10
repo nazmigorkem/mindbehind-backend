@@ -5,7 +5,7 @@ import {
 	getEmployeeRoleWithRoleID,
 	insertRoleToEmployee,
 } from '#database/operations/employee-roles.js';
-import { getEmployeeWithEmployeeID, insertEmployee } from '#database/operations/employees.js';
+import { getEmployeeWithEmployeeID, getEmployeeWithUserID, insertEmployee } from '#database/operations/employees.js';
 import { getUserWithID } from '#database/operations/user.js';
 import { ErrorFactory } from '#factory/error-factory.js';
 import { ResponseFactory } from '#factory/response-factory.js';
@@ -45,6 +45,11 @@ EmployeesRouter.post('/:branchID/employees', ownerAuth, validateData(EmployeePos
 	const user = await getUserWithID(userID);
 	if (!user) {
 		return ErrorFactory.createNotFoundError(res, 'User not found!');
+	}
+
+	const employee = await getEmployeeWithUserID(branchID, userID);
+	if (employee) {
+		return ErrorFactory.createConflictError(res, 'This user already is an employee of this bvranch!');
 	}
 
 	const employeeID = await insertEmployee({
@@ -102,6 +107,8 @@ EmployeesRouter.delete('/:branchID/employees/:employeeID/roles/:roleID', ownerAu
 	if (!employee) {
 		return ErrorFactory.createNotFoundError(res, 'Employee not found!');
 	}
+
+	// No need for role existence check. If employee does not have it then it is already deleted or non-existent.
 	const doesEmployeeHaveRole = await doesEmployeeHaveRoleWithID(employeeID, roleID);
 	if (!doesEmployeeHaveRole) {
 		return ErrorFactory.createNotFoundError(res, 'Employee does not have the role!');

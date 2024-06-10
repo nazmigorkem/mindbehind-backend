@@ -1,4 +1,10 @@
-import { deleteRoleFromUser, doesUserHaveRoleWithID, getUserRolesWithUserID, insertRoleToUser } from '#database/operations/user-roles.js';
+import {
+	deleteRoleFromUser,
+	doesUserHaveRoleWithID,
+	getUserRoleWithRoleID,
+	getUserRolesWithUserID,
+	insertRoleToUser,
+} from '#database/operations/user-roles.js';
 import { deleteUser, getUserWithEmail, getUserWithID, insertUser, updateUser } from '#database/operations/user.js';
 import { ErrorFactory } from '#factory/error-factory.js';
 import { ResponseFactory } from '#factory/response-factory.js';
@@ -15,13 +21,14 @@ UsersRouter.use('/roles', systemAdminAuth, UserRolesRouter);
 
 UsersRouter.post('/', systemAdminAuth, validateData(UserPostBodySchema), async (req, res) => {
 	const email = req.body.email;
+	const password = req.body.password;
 
 	const user = await getUserWithEmail(email);
 	if (user) {
 		return ErrorFactory.createConflictError(res, 'User already exists with the same email address!');
 	}
 
-	const hashedPassword = crypto.hash('sha256', req.body.password, 'hex');
+	const hashedPassword = crypto.hash('sha256', password, 'hex');
 
 	const userID = await insertUser({
 		...req.body,
@@ -31,7 +38,9 @@ UsersRouter.post('/', systemAdminAuth, validateData(UserPostBodySchema), async (
 });
 
 UsersRouter.get('/:userID', userAuth, async (req, res) => {
-	const user = await getUserWithID(req.params.userID);
+	const userID = req.params.userID;
+
+	const user = await getUserWithID(userID);
 	if (!user) {
 		return ErrorFactory.createNotFoundError(res, 'User not found!');
 	}
@@ -40,7 +49,9 @@ UsersRouter.get('/:userID', userAuth, async (req, res) => {
 });
 
 UsersRouter.get('/me/profile', userAuth, async (req, res) => {
-	const user = await getUserWithID(req.user!.userID);
+	const userID = req.user!.userID;
+
+	const user = await getUserWithID(userID);
 	if (!user) {
 		return ErrorFactory.createNotFoundError(res, 'User not found!');
 	}
@@ -49,9 +60,10 @@ UsersRouter.get('/me/profile', userAuth, async (req, res) => {
 });
 
 UsersRouter.put('/me/profile', userAuth, validateData(UserPutBodySchema), async (req, res) => {
-	const sessionUserID = req.user!.userID;
+	const userID = req.user!.userID;
+	const email = req.body.email;
 
-	const user = await getUserWithID(sessionUserID);
+	const user = await getUserWithID(userID);
 	if (!user) {
 		return ErrorFactory.createNotFoundError(res, 'User not found!');
 	}
@@ -60,45 +72,60 @@ UsersRouter.put('/me/profile', userAuth, validateData(UserPutBodySchema), async 
 		return ErrorFactory.createBadRequestError(res, 'No data to update!');
 	}
 
-	const existingUser = await getUserWithEmail(req.body.email);
-	if (existingUser && existingUser.id !== sessionUserID && existingUser.email !== user.email) {
+	const existingUser = await getUserWithEmail(email);
+	if (existingUser && existingUser.id !== userID && existingUser.email !== user.email) {
 		return ErrorFactory.createConflictError(res, 'User already exists with the same email address!');
 	}
 
-	if (user.email === req.body.email) {
+	if (user.email === email) {
 		return ErrorFactory.createConflictError(
 			res,
 			'You cannot update your email address with the same one. Please provide a different email address.'
 		);
 	}
 
-	await updateUser(sessionUserID, req.body);
+	await updateUser(userID, req.body);
 	ResponseFactory.createOKResponse(res, 'User updated successfully!');
 });
 
 UsersRouter.delete('/:userID', systemAdminAuth, async (req, res) => {
-	const user = await getUserWithID(req.params.userID);
+	const userID = req.params.userID;
+
+	const user = await getUserWithID(userID);
 	if (!user) {
 		return ErrorFactory.createNotFoundError(res, 'User not found!');
 	}
 
-	await deleteUser(req.params.userID);
+	await deleteUser(userID);
 	ResponseFactory.createOKResponse(res, 'User deleted successfully!');
 });
 
 UsersRouter.get('/:userID/roles', systemAdminAuth, async (req, res) => {
-	const user = await getUserWithID(req.params.userID);
+	const userID = req.params.userID;
+
+	const user = await getUserWithID(userID);
 	if (!user) {
 		return ErrorFactory.createNotFoundError(res, 'User not found!');
 	}
 
-	const roles = await getUserRolesWithUserID(user.id);
+	const roles = await getUserRolesWithUserID(userID);
 	ResponseFactory.createOKResponse(res, { roles });
 });
 
 UsersRouter.post('/:userID/roles/:roleID', systemAdminAuth, async (req, res) => {
 	const userID = req.params.userID;
 	const roleID = req.params.roleID;
+
+	const user = await getUserWithID(userID);
+	if (!user) {
+		return ErrorFactory.createNotFoundError(res, 'User not found!');
+	}
+
+	const role = await getUserRoleWithRoleID(roleID);
+	if (!role) {
+		return ErrorFactory.createNotFoundError(res, 'Role not found!');
+	}
+
 	const doesUserHaveRole = await doesUserHaveRoleWithID(userID, roleID);
 	if (doesUserHaveRole) {
 		return ErrorFactory.createNotFoundError(res, 'User already has this role.');
@@ -115,6 +142,12 @@ UsersRouter.post('/:userID/roles/:roleID', systemAdminAuth, async (req, res) => 
 UsersRouter.delete('/:userID/roles/:roleID', systemAdminAuth, async (req, res) => {
 	const userID = req.params.userID;
 	const roleID = req.params.roleID;
+
+	const user = await getUserWithID(userID);
+	if (!user) {
+		return ErrorFactory.createNotFoundError(res, 'User not found!');
+	}
+
 	const doesUserHaveRole = await doesUserHaveRoleWithID(userID, roleID);
 	if (!doesUserHaveRole) {
 		return ErrorFactory.createNotFoundError(res, 'User does not have this role!');

@@ -1,0 +1,795 @@
+{
+	"info": {
+		"_postman_id": "86a433f3-fcc7-4843-8af1-01a6b1042e3c",
+		"name": "Mindbehind-Case",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20244280"
+	},
+	"item": [
+		{
+			"name": "Branch",
+			"item": [
+				{
+					"name": "Employee",
+					"item": [
+						{
+							"name": "Add Employee",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userID\": \"8dad3fa3-3ca6-4888-b98a-48518da8ad1c\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/branches/551ec176-566c-4549-b607-2c3fa90667d3/employees",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"branches",
+										"551ec176-566c-4549-b607-2c3fa90667d3",
+										"employees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Role To Employee",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/branches/551ec176-566c-4549-b607-2c3fa90667d3/employees/103a89d8-5580-4637-8210-01f55790da39/roles/26daa012-f59c-4527-aee1-d3604a796635",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"branches",
+										"551ec176-566c-4549-b607-2c3fa90667d3",
+										"employees",
+										"103a89d8-5580-4637-8210-01f55790da39",
+										"roles",
+										"26daa012-f59c-4527-aee1-d3604a796635"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Role From Employee",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/branches/b32245b4-928c-4b59-a938-cd82df846ab7/employees/69e37af5-cb03-4444-934e-135640612a3e/roles/aa0097a9-c397-4ccb-9d9f-030698dd6141",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"branches",
+										"b32245b4-928c-4b59-a938-cd82df846ab7",
+										"employees",
+										"69e37af5-cb03-4444-934e-135640612a3e",
+										"roles",
+										"aa0097a9-c397-4ccb-9d9f-030698dd6141"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Employee With ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/branches/551ec176-566c-4549-b607-2c3fa90667d3/employees/103a89d8-5580-4637-8210-01f55790da39",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"branches",
+										"551ec176-566c-4549-b607-2c3fa90667d3",
+										"employees",
+										"103a89d8-5580-4637-8210-01f55790da39"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Branch With ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/branches/551ec176-566c-4549-b607-2c3fa90667d3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"branches",
+								"551ec176-566c-4549-b607-2c3fa90667d3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Branches",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/branches",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"branches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Branch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test123\",\r\n    \"fullAddress\": \"asdf\",\r\n    \"latitude\": 89.12354,\r\n    \"longitude\": 180,\r\n    \"phone\": \"1234123412\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/branches",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"branches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Branch",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/branches/551ec176-566c-4549-b607-2c3fa90667d3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"branches",
+								"551ec176-566c-4549-b607-2c3fa90667d3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Branch",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/branches/551ec176-566c-4549-b607-2c3fa90667d3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"branches",
+								"551ec176-566c-4549-b607-2c3fa90667d3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Roles",
+					"item": [
+						{
+							"name": "List User Roles",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "api_key",
+										"value": "wZ7XQZr7y8j2DgBZDpuLbN8hCnWKYWea"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/roles",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Role With ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "api_key",
+										"value": "wZ7XQZr7y8j2DgBZDpuLbN8hCnWKYWea"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/roles/4c6e30c2-e400-428d-af7b-566f462733f2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"roles",
+										"4c6e30c2-e400-428d-af7b-566f462733f2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Role",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "api_key",
+										"value": "wZ7XQZr7y8j2DgBZDpuLbN8hCnWKYWea"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"manager4\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/roles/4c6e30c2-e400-428d-af7b-566f462733f2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"roles",
+										"4c6e30c2-e400-428d-af7b-566f462733f2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "api_key",
+										"value": "wZ7XQZr7y8j2DgBZDpuLbN8hCnWKYWea"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"manager\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/roles",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get User With ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/users/af94426e-fa63-4878-8d08-0e018addb8e6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"af94426e-fa63-4878-8d08-0e018addb8e6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api_key",
+								"value": "wZ7XQZr7y8j2DgBZDpuLbN8hCnWKYWea"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"asdfe@mail.com\",\r\n    \"password\": \"123412341234\",\r\n    \"name\": \"1234\",\r\n    \"surname\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "api_key",
+								"value": "wZ7XQZr7y8j2DgBZDpuLbN8hCnWKYWea"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"asdfe@mail.com\",\r\n    \"password\": \"123412341234\",\r\n    \"name\": \"1234\",\r\n    \"surname\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/25d96ea7-7d02-48ef-8e13-5af107955e81",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"25d96ea7-7d02-48ef-8e13-5af107955e81"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Role To User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api_key",
+								"value": "wZ7XQZr7y8j2DgBZDpuLbN8hCnWKYWea"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roleName\": \"owner\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/d4226108-e7bf-4ad6-bf7c-7ee45278903c/roles/9f901dbd-1e97-4f10-9fcf-d38b8ef210c5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"d4226108-e7bf-4ad6-bf7c-7ee45278903c",
+								"roles",
+								"9f901dbd-1e97-4f10-9fcf-d38b8ef210c5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role From User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "api_key",
+								"value": "wZ7XQZr7y8j2DgBZDpuLbN8hCnWKYWea"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roleName\": \"owner\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/af94426e-fa63-4878-8d08-0e018addb8e6/roles/4c6e30c2-e400-428d-af7b-566f462733f2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"af94426e-fa63-4878-8d08-0e018addb8e6",
+								"roles",
+								"4c6e30c2-e400-428d-af7b-566f462733f2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"1234@1234.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/me/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"me",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List User's Roles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api_key",
+								"value": "wZ7XQZr7y8j2DgBZDpuLbN8hCnWKYWea"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/af94426e-fa63-4878-8d08-0e018addb8e6/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"af94426e-fa63-4878-8d08-0e018addb8e6",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"asdfeg@mail.com\",\r\n    \"password\": \"123412341234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee Roles",
+			"item": [
+				{
+					"name": "List Employee Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/branches/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"branches",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee Role With ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/branches/roles/aa0097a9-c397-4ccb-9d9f-030698dd6141",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"branches",
+								"roles",
+								"aa0097a9-c397-4ccb-9d9f-030698dd6141"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Employee Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"senior local manager\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/branches/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"branches",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Employee Role",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"senior local manager 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/branches/roles/aa0097a9-c397-4ccb-9d9f-030698dd6141",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"branches",
+								"roles",
+								"aa0097a9-c397-4ccb-9d9f-030698dd6141"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employee Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/branches/roles/aa0097a9-c397-4ccb-9d9f-030698dd6141",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"branches",
+								"roles",
+								"aa0097a9-c397-4ccb-9d9f-030698dd6141"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employee Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"local manager\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/employee-roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"employee-roles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.headers.add({key: 'authorization', value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJkNDIyNjEwOC1lN2JmLTRhZDYtYmY3Yy03ZWU0NTI3ODkwM2MiLCJpYXQiOjE3MTgwNDA1MTgsImV4cCI6MTcxODA0NDExOH0.Z-Mtpafzm7r9pXP_sTaPoqsyNc71KWuXJLyHUKunzcQ' })"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
