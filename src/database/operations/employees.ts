@@ -3,9 +3,9 @@ import { EmployeeToRoles } from 'database/schemas/employee-to-roles.schema';
 import { Employees } from 'database/schemas/employee.schema';
 import { and, eq } from 'drizzle-orm';
 
-export async function getEmployeeWithEmployeeID(id: string) {
+export async function getEmployeeWithEmployeeID(employeeID: string) {
 	return await MySQLConnection.getInstance().query.Employees.findFirst({
-		where: eq(Employees.employeeID, id),
+		where: eq(Employees.employeeID, employeeID),
 	});
 }
 
@@ -23,12 +23,12 @@ export async function insertEmployee(data: typeof Employees.$inferInsert) {
 	return employeeID;
 }
 
-export async function deleteEmployee(id: string) {
-	return await MySQLConnection.getInstance().delete(Employees).where(eq(Employees.employeeID, id));
+export async function updateEmployee(employeeID: string, data: Omit<typeof Employees.$inferSelect, 'employeeID'>) {
+	return await MySQLConnection.getInstance().update(Employees).set(data).where(eq(Employees.employeeID, employeeID));
 }
 
-export async function updateEmployee(id: string, data: Omit<typeof Employees.$inferSelect, 'employeeID'>) {
-	return await MySQLConnection.getInstance().update(Employees).set(data).where(eq(Employees.employeeID, id));
+export async function deleteEmployee(employeeID: string) {
+	return await MySQLConnection.getInstance().delete(Employees).where(eq(Employees.employeeID, employeeID));
 }
 
 export async function addRoleToEmployee(data: typeof EmployeeToRoles.$inferInsert) {

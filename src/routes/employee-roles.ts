@@ -3,6 +3,7 @@ import {
 	doesEmployeeHaveRoleWithID,
 	getEmployeeRoleWithName,
 	getEmployeeRoleWithRoleID,
+	getEmployeeRoles,
 	insertEmployeeRole,
 	insertRoleToEmployee,
 } from 'database/operations/employee-roles';
@@ -14,6 +15,11 @@ import { RolePostBodySchema } from 'types/roles';
 import { validateData } from 'util/validate';
 
 const EmployeeRolesRouter = Router();
+
+EmployeeRolesRouter.get('/', employeeAuth, async (req, res) => {
+	const roles = await getEmployeeRoles();
+	return ResponseFactory.createOKResponse(res, { roles });
+});
 
 EmployeeRolesRouter.get('/:roleID', employeeAuth, async (req, res) => {
 	const role = await getEmployeeRoleWithRoleID(req.params.roleID);

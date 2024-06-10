@@ -1,4 +1,4 @@
-import { getUserRoleWithName, getUserRoleWithRoleID, getUserRoles, insertUserRole } from 'database/operations/user-roles';
+import { getUserRoleWithName, getUserRoleWithRoleID, getUserRoles, insertUserRole, updateUserRole } from 'database/operations/user-roles';
 import { Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import { ResponseFactory } from 'factory/response-factory';
@@ -38,7 +38,11 @@ UserRolesRouter.put('/:roleID', validateData(RolePutBodySchema), async (req, res
 		return ErrorFactory.createConflictError(res, 'Role already exists with the same name!');
 	}
 
-	const roleID = await insertUserRole(req.body);
+	if (Object.keys(req.body).length === 0) {
+		return ErrorFactory.createBadRequestError(res, 'No data provided to update!');
+	}
+
+	const roleID = await updateUserRole(req.params.roleID, req.body);
 
 	return ResponseFactory.createOKResponse(res, { roleID });
 });

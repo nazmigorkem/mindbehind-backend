@@ -7,15 +7,39 @@ export async function getUserRoles() {
 	return await MySQLConnection.getInstance().query.UserRoles.findMany();
 }
 
-export async function getUserRoleWithRoleID(id: string) {
+export async function getUserRolesWithUserID(userID: string) {
+	return (
+		await MySQLConnection.getInstance().query.UserToRoles.findMany({
+			where: eq(UserToRoles.userID, userID),
+			columns: {
+				roleID: true,
+			},
+		})
+	).map((role) => role.roleID);
+}
+
+export async function insertUserRole(data: typeof UserRoles.$inferInsert) {
+	const roleID = crypto.randomUUID();
+	await MySQLConnection.getInstance()
+		.insert(UserRoles)
+		.values({ ...data, id: roleID });
+	return roleID;
+}
+
+export async function updateUserRole(roleID: string, data: Omit<typeof UserRoles.$inferInsert, 'id'>) {
+	await MySQLConnection.getInstance().update(UserRoles).set(data).where(eq(UserRoles.id, roleID));
+	return roleID;
+}
+
+export async function getUserRoleWithRoleID(roleID: string) {
 	return await MySQLConnection.getInstance().query.UserRoles.findFirst({
-		where: eq(UserRoles.id, id),
+		where: eq(UserRoles.id, roleID),
 	});
 }
 
-export async function getUserRoleWithName(name: string) {
+export async function getUserRoleWithName(roleName: string) {
 	return await MySQLConnection.getInstance().query.UserRoles.findFirst({
-		where: eq(UserRoles.name, name),
+		where: eq(UserRoles.name, roleName),
 	});
 }
 
@@ -44,12 +68,4 @@ export async function deleteRoleFromUser(userID: string, roleID: string) {
 	return await MySQLConnection.getInstance()
 		.delete(UserToRoles)
 		.where(and(eq(UserToRoles.userID, userID), eq(UserToRoles.roleID, roleID)));
-}
-
-export async function insertUserRole(data: typeof UserRoles.$inferInsert) {
-	const roleID = crypto.randomUUID();
-	await MySQLConnection.getInstance()
-		.insert(UserRoles)
-		.values({ ...data, id: roleID });
-	return roleID;
 }

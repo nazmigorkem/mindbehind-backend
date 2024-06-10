@@ -1,5 +1,5 @@
 import { deleteUser, getUserWithEmail, getUserWithID, insertUser, updateUser } from 'database/operations/user';
-import { deleteRoleFromUser, doesUserHaveRoleWithID, insertRoleToUser } from 'database/operations/user-roles';
+import { deleteRoleFromUser, doesUserHaveRoleWithID, getUserRolesWithUserID, insertRoleToUser } from 'database/operations/user-roles';
 import { Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import { ResponseFactory } from 'factory/response-factory';
@@ -78,6 +78,16 @@ UsersRouter.delete('/:userID', systemAdminAuth, async (req, res) => {
 
 	await deleteUser(req.params.userID);
 	ResponseFactory.createOKResponse(res, 'User deleted successfully!');
+});
+
+UsersRouter.get('/:userID/roles', systemAdminAuth, async (req, res) => {
+	const user = await getUserWithID(req.params.userID);
+	if (!user) {
+		return ErrorFactory.createNotFoundError(res, 'User not found!');
+	}
+
+	const roles = await getUserRolesWithUserID(user.id);
+	ResponseFactory.createOKResponse(res, { roles });
 });
 
 UsersRouter.post('/:userID/roles/:roleID', systemAdminAuth, async (req, res) => {

@@ -3,6 +3,10 @@ import { EmployeeRoles } from 'database/schemas/employee-roles.schema';
 import { EmployeeToRoles } from 'database/schemas/employee-to-roles.schema';
 import { and, eq } from 'drizzle-orm';
 
+export async function getEmployeeRoles() {
+	return await MySQLConnection.getInstance().query.EmployeeRoles.findMany();
+}
+
 export async function getEmployeeRoleWithRoleID(id: string) {
 	return await MySQLConnection.getInstance().query.EmployeeRoles.findFirst({
 		where: eq(EmployeeRoles.id, id),
