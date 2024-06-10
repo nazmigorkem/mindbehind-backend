@@ -1,4 +1,5 @@
 import { MySQLConnection } from 'database/mysql';
+import { UserToRoles } from 'database/schemas/user-to-roles.schema';
 import { Users } from 'database/schemas/user.schema';
 import { eq } from 'drizzle-orm';
 
@@ -11,6 +12,12 @@ export async function getUserWithID(id: string) {
 			name: true,
 			surname: true,
 		},
+	});
+}
+
+export async function getUserWithRoleID(roleID: string) {
+	return await MySQLConnection.getInstance().query.UserToRoles.findFirst({
+		where: eq(UserToRoles.roleID, roleID),
 	});
 }
 

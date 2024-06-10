@@ -31,6 +31,10 @@ export async function updateUserRole(roleID: string, data: Omit<typeof UserRoles
 	return roleID;
 }
 
+export async function deleteUserRole(roleID: string) {
+	return await MySQLConnection.getInstance().delete(UserRoles).where(eq(UserRoles.id, roleID));
+}
+
 export async function getUserRoleWithRoleID(roleID: string) {
 	return await MySQLConnection.getInstance().query.UserRoles.findFirst({
 		where: eq(UserRoles.id, roleID),

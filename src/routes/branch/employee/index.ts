@@ -1,12 +1,12 @@
 import { getBranchWithID } from 'database/operations/branch';
-import { getEmployeeRoleWithName } from 'database/operations/employee-roles';
-import { addRoleToEmployee, getEmployeeWithEmployeeID, insertEmployee } from 'database/operations/employees';
+import { deleteRoleFromEmployee, doesEmployeeHaveRoleWithID, insertRoleToEmployee } from 'database/operations/employee-roles';
+import { getEmployeeWithEmployeeID, insertEmployee } from 'database/operations/employees';
 import { getUserWithID } from 'database/operations/user';
 import { Request, Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import { ResponseFactory } from 'factory/response-factory';
 import { employeeAuth, ownerAuth } from 'middlewares/auth';
-import { EmployeePostBodySchema, EmployeeRolePostBodySchema } from 'types/employee';
+import { EmployeePostBodySchema } from 'types/employee';
 import { validateData } from 'util/validate';
 
 const EmployeesRouter = Router();
@@ -44,23 +44,35 @@ EmployeesRouter.post('/', ownerAuth, validateData(EmployeePostBodySchema), async
 	return ResponseFactory.createOKResponse(res, { employeeID });
 });
 
-EmployeesRouter.post('/:employeeID/roles', ownerAuth, validateData(EmployeeRolePostBodySchema), async (req, res) => {
-	const employee = await getEmployeeWithEmployeeID(req.params.employeeID);
-	if (!employee || employee.branchID !== req.params.branchID) {
-		return ErrorFactory.createNotFoundError(res, 'Employee not found!');
+EmployeesRouter.post('/:employeeID/roles/:roleID', ownerAuth, async (req, res) => {
+	const employeeID = req.params.employeeID;
+	const roleID = req.params.roleID;
+	const doesEmployeeHaveRole = await doesEmployeeHaveRoleWithID(employeeID, roleID);
+
+	if (doesEmployeeHaveRole) {
+		return ErrorFactory.createNotFoundError(res, 'Employee already has the role!');
 	}
 
-	const role = await getEmployeeRoleWithName(req.body.roleName);
-	if (!role) {
-		return ErrorFactory.createNotFoundError(res, 'Role not found!');
-	}
-
-	await addRoleToEmployee({
-		employeeID: req.params.employeeID,
-		roleID: role.id,
+	await insertRoleToEmployee({
+		employeeID,
+		roleID,
 	});
 
 	return ResponseFactory.createOKResponse(res, 'Role added to employee successfully!');
+});
+
+EmployeesRouter.delete('/:employeeID/roles/:roleID', ownerAuth, async (req, res) => {
+	const employeeID = req.params.employeeID;
+	const roleID = req.params.roleID;
+	const doesEmployeeHaveRole = await doesEmployeeHaveRoleWithID(employeeID, roleID);
+
+	if (!doesEmployeeHaveRole) {
+		return ErrorFactory.createNotFoundError(res, 'Employee does not have the role!');
+	}
+
+	await deleteRoleFromEmployee(employeeID, roleID);
+
+	return ResponseFactory.createOKResponse(res, 'Role deleted from employee successfully!');
 });
 
 export default EmployeesRouter;

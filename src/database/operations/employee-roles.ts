@@ -7,15 +7,38 @@ export async function getEmployeeRoles() {
 	return await MySQLConnection.getInstance().query.EmployeeRoles.findMany();
 }
 
-export async function getEmployeeRoleWithRoleID(id: string) {
+export async function getEmployeeRoleWithRoleID(roleID: string) {
 	return await MySQLConnection.getInstance().query.EmployeeRoles.findFirst({
-		where: eq(EmployeeRoles.id, id),
+		where: eq(EmployeeRoles.id, roleID),
 	});
 }
 
-export async function getEmployeeRoleWithName(name: string) {
+export async function insertEmployeeRole(data: typeof EmployeeRoles.$inferInsert) {
+	const roleID = crypto.randomUUID();
+	await MySQLConnection.getInstance()
+		.insert(EmployeeRoles)
+		.values({ ...data, id: roleID });
+	return roleID;
+}
+
+export async function updateEmployeeRole(roleID: string, data: Omit<typeof EmployeeRoles.$inferInsert, 'id'>) {
+	await MySQLConnection.getInstance().update(EmployeeRoles).set(data).where(eq(EmployeeRoles.id, roleID));
+	return roleID;
+}
+
+export async function deleteEmployeeRole(roleID: string) {
+	return await MySQLConnection.getInstance().delete(EmployeeRoles).where(eq(EmployeeRoles.id, roleID));
+}
+
+export async function deleteRoleFromEmployee(employeeID: string, roleID: string) {
+	return await MySQLConnection.getInstance()
+		.delete(EmployeeToRoles)
+		.where(and(eq(EmployeeToRoles.employeeID, employeeID), eq(EmployeeToRoles.roleID, roleID)));
+}
+
+export async function getEmployeeRoleWithName(roleName: string) {
 	return await MySQLConnection.getInstance().query.EmployeeRoles.findFirst({
-		where: eq(EmployeeRoles.name, name),
+		where: eq(EmployeeRoles.name, roleName),
 	});
 }
 
@@ -38,18 +61,4 @@ export async function doesEmployeeHaveNamedRole(employeeID: string, roleName: st
 
 export async function insertRoleToEmployee(data: typeof EmployeeToRoles.$inferInsert) {
 	return await MySQLConnection.getInstance().insert(EmployeeToRoles).values(data);
-}
-
-export async function deleteRoleFromEmployee(employeeID: string, roleID: string) {
-	return await MySQLConnection.getInstance()
-		.delete(EmployeeToRoles)
-		.where(and(eq(EmployeeToRoles.employeeID, employeeID), eq(EmployeeToRoles.roleID, roleID)));
-}
-
-export async function insertEmployeeRole(data: typeof EmployeeRoles.$inferInsert) {
-	const roleID = crypto.randomUUID();
-	await MySQLConnection.getInstance()
-		.insert(EmployeeRoles)
-		.values({ ...data, id: roleID });
-	return roleID;
 }

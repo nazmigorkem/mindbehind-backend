@@ -7,10 +7,12 @@ import { employeeAuth, ownerAuth } from 'middlewares/auth';
 import { BranchPostBodySchema, BranchPutBodySchema } from 'types/branch';
 import { validateData } from 'util/validate';
 import EmployeesRouter from './employee';
+import EmployeeRolesRouter from './roles';
 
 const BranchesRouter = Router();
 
 BranchesRouter.use('/:branchID/employees', EmployeesRouter);
+BranchesRouter.use('/roles', EmployeeRolesRouter);
 
 BranchesRouter.get('/:branchID', employeeAuth, async (req, res) => {
 	const result = await getBranchWithID(req.params.branchID);

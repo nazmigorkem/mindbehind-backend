@@ -15,6 +15,12 @@ export async function getEmployeeWithUserID(branchID: string, userID: string) {
 	});
 }
 
+export async function getEmployeeWithRoleID(roleID: string) {
+	return await MySQLConnection.getInstance().query.EmployeeToRoles.findFirst({
+		where: eq(EmployeeToRoles.roleID, roleID),
+	});
+}
+
 export async function insertEmployee(data: typeof Employees.$inferInsert) {
 	const employeeID = crypto.randomUUID();
 	await MySQLConnection.getInstance()
