@@ -1,5 +1,4 @@
 import { deleteBranch, getBranchWithID, insertBranch, updateBranch } from 'database/operations/branch';
-import { getEmployeeWithUserID } from 'database/operations/employees';
 import { Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import { ResponseFactory } from 'factory/response-factory';
@@ -11,19 +10,15 @@ import EmployeeRolesRouter from './roles';
 
 const BranchesRouter = Router();
 
-BranchesRouter.use('/:branchID/employees', EmployeesRouter);
+BranchesRouter.use('/', EmployeesRouter);
 BranchesRouter.use('/roles', EmployeeRolesRouter);
 
 BranchesRouter.get('/:branchID', employeeAuth, async (req, res) => {
-	const result = await getBranchWithID(req.params.branchID);
+	const branchID = req.params.branchID;
+
+	const result = await getBranchWithID(branchID);
 	if (!result) {
 		return ErrorFactory.createNotFoundError(res, 'Branch not found!');
-	}
-
-	const { userID } = req.user!;
-	const user = await getEmployeeWithUserID(req.params.branchID, userID);
-	if (!user) {
-		return ErrorFactory.createUnauthorizedError(res, 'Unauthorized! You are not an employee of this branch!');
 	}
 
 	return ResponseFactory.createOKResponse(res, result);
@@ -36,23 +31,27 @@ BranchesRouter.post('/', ownerAuth, validateData(BranchPostBodySchema), async (r
 });
 
 BranchesRouter.put('/:branchID', ownerAuth, validateData(BranchPutBodySchema), async (req, res) => {
-	const branch = await getBranchWithID(req.params.id);
+	const branchID = req.params.branchID;
+
+	const branch = await getBranchWithID(branchID);
 	if (!branch) {
 		return ErrorFactory.createNotFoundError(res, 'Branch not found!');
 	}
 
-	await updateBranch(req.params.id, req.body);
+	await updateBranch(branchID, req.body);
 
 	return ResponseFactory.createOKResponse(res, 'Branch updated successfully!');
 });
 
 BranchesRouter.delete('/:branchID', ownerAuth, async (req, res) => {
-	const branch = await getBranchWithID(req.params.branchID);
+	const branchID = req.params.branchID;
+
+	const branch = await getBranchWithID(branchID);
 	if (!branch) {
 		return ErrorFactory.createNotFoundError(res, 'Branch not found!');
 	}
 
-	await deleteBranch(req.params.branchID);
+	await deleteBranch(branchID);
 
 	return ResponseFactory.createOKResponse(res, 'Branch deleted successfully!');
 });

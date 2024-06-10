@@ -21,18 +21,24 @@ UserRolesRouter.get('/', async (req, res) => {
 });
 
 UserRolesRouter.post('/', validateData(RolePostBodySchema), async (req, res) => {
-	const role = await getUserRoleWithName(req.body.name);
+	const roleName = req.body.name;
+
+	const role = await getUserRoleWithName(roleName);
 	if (role) {
 		return ErrorFactory.createConflictError(res, 'Role already exists with the same name!');
 	}
 
-	const roleID = await insertUserRole(req.body);
+	const roleID = await insertUserRole({
+		name: roleName,
+	});
 
 	return ResponseFactory.createOKResponse(res, { roleID });
 });
 
 UserRolesRouter.get('/:roleID', async (req, res) => {
-	const role = await getUserRoleWithRoleID(req.params.roleID);
+	const roleID = req.params.roleID;
+
+	const role = await getUserRoleWithRoleID(roleID);
 	if (!role) {
 		return ErrorFactory.createNotFoundError(res, 'Role not found!');
 	}
@@ -41,7 +47,10 @@ UserRolesRouter.get('/:roleID', async (req, res) => {
 });
 
 UserRolesRouter.put('/:roleID', validateData(RolePutBodySchema), async (req, res) => {
-	const role = await getUserRoleWithName(req.body.name);
+	const roleName = req.body.name;
+	const roleID = req.params.roleID;
+
+	const role = await getUserRoleWithName(roleName);
 	if (role) {
 		return ErrorFactory.createConflictError(res, 'Role already exists with the same name!');
 	}
@@ -50,13 +59,16 @@ UserRolesRouter.put('/:roleID', validateData(RolePutBodySchema), async (req, res
 		return ErrorFactory.createBadRequestError(res, 'No data provided to update!');
 	}
 
-	const roleID = await updateUserRole(req.params.roleID, req.body);
+	await updateUserRole(roleID, {
+		name: roleName,
+	});
 
-	return ResponseFactory.createOKResponse(res, { roleID });
+	return ResponseFactory.createOKResponse(res, 'Role updated successfully!');
 });
 
 UserRolesRouter.delete('/:roleID', async (req, res) => {
 	const roleID = req.params.roleID;
+
 	const role = await getUserRoleWithRoleID(roleID);
 	if (!role) {
 		return ErrorFactory.createNotFoundError(res, 'Role not found!');

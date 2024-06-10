@@ -44,7 +44,7 @@ CREATE TABLE `users` (
 	`name` varchar(30) NOT NULL,
 	`surname` varchar(30) NOT NULL,
 	`email` varchar(100) NOT NULL,
-	`password` varchar(32) NOT NULL,
+	`password` varchar(64) NOT NULL,
 	CONSTRAINT `users_id` PRIMARY KEY(`id`),
 	CONSTRAINT `users_email_unique` UNIQUE(`email`)
 );

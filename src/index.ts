@@ -3,7 +3,8 @@ import { MySQLConnection } from 'database/mysql';
 import { getUserRoleWithName } from 'database/operations/user-roles';
 import { UserRoles } from 'database/schemas/user-roles.schema';
 import { migrate } from 'drizzle-orm/mysql2/migrator';
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
+import 'express-async-errors';
 import { userAuth } from 'middlewares/auth';
 import AuthRouter from 'routes/auth';
 import BranchesRouter from 'routes/branch';
@@ -18,6 +19,11 @@ app.use(express.json());
 app.use('/branches', userAuth, BranchesRouter);
 app.use('/users', UsersRouter);
 app.use('/auth', AuthRouter);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+	console.error(err.stack);
+	res.status(500).send({ data: { message: 'Something went wrong.' }, success: false });
+});
 
 app.listen(3000, async () => {
 	await MySQLConnection.setConnectionURL(EnvFile.MYSQL_URL);

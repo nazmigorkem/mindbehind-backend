@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "15e30ec9-8548-4e19-a130-076f9985caec",
+  "id": "fac22cd8-3243-4493-9823-8eedd27664c8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "branches": {
@@ -333,7 +333,7 @@
         },
         "password": {
           "name": "password",
-          "type": "varchar(32)",
+          "type": "varchar(64)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false

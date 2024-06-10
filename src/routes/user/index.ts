@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { deleteUser, getUserWithEmail, getUserWithID, insertUser, updateUser } from 'database/operations/user';
 import { deleteRoleFromUser, doesUserHaveRoleWithID, getUserRolesWithUserID, insertRoleToUser } from 'database/operations/user-roles';
 import { Router } from 'express';
@@ -13,14 +14,19 @@ const UsersRouter = Router();
 UsersRouter.use('/roles', systemAdminAuth, UserRolesRouter);
 
 UsersRouter.post('/', systemAdminAuth, validateData(UserPostBodySchema), async (req, res) => {
-	const user = await getUserWithEmail(req.body.email);
+	const email = req.body.email;
+
+	const user = await getUserWithEmail(email);
 	if (user) {
 		return ErrorFactory.createConflictError(res, 'User already exists with the same email address!');
 	}
 
-	// todo: hash password
+	const hashedPassword = crypto.hash('sha256', req.body.password, 'hex');
 
-	const userID = await insertUser(req.body);
+	const userID = await insertUser({
+		...req.body,
+		password: hashedPassword,
+	});
 	ResponseFactory.createOKResponse(res, { userID });
 });
 

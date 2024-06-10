@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { getUserWithEmail } from 'database/operations/user';
 import { Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
@@ -12,7 +13,8 @@ const AuthRouter = Router();
 AuthRouter.post('/login', validateData(AuthPostBodySchema), async (req, res) => {
 	const user = await getUserWithEmail(req.body.email);
 
-	if (!user || user.password !== req.body.password) {
+	const hashedPassword = crypto.hash('sha256', req.body.password, 'hex');
+	if (!user || user.password !== hashedPassword) {
 		return ErrorFactory.createUnauthorizedError(res, 'Invalid email or password!');
 	}
 

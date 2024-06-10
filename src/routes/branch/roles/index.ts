@@ -22,7 +22,9 @@ EmployeeRolesRouter.get('/', employeeAuth, async (req, res) => {
 });
 
 EmployeeRolesRouter.get('/:roleID', employeeAuth, async (req, res) => {
-	const role = await getEmployeeRoleWithRoleID(req.params.roleID);
+	const roleID = req.params.roleID;
+
+	const role = await getEmployeeRoleWithRoleID(roleID);
 	if (!role) {
 		return ErrorFactory.createNotFoundError(res, 'Role not found!');
 	}
@@ -31,18 +33,25 @@ EmployeeRolesRouter.get('/:roleID', employeeAuth, async (req, res) => {
 });
 
 EmployeeRolesRouter.post('/', ownerAuth, validateData(RolePostBodySchema), async (req, res) => {
-	const role = await getEmployeeRoleWithName(req.body.name);
+	const roleName = req.body.name;
+
+	const role = await getEmployeeRoleWithName(roleName);
 	if (role) {
 		return ErrorFactory.createConflictError(res, 'Role already exists with the same name!');
 	}
 
-	const roleID = await insertEmployeeRole(req.body);
+	const roleID = await insertEmployeeRole({
+		name: roleName,
+	});
 
 	return ResponseFactory.createOKResponse(res, { roleID });
 });
 
 EmployeeRolesRouter.put('/:roleID', ownerAuth, validateData(RolePutBodySchema), async (req, res) => {
-	const role = await getEmployeeRoleWithName(req.body.name);
+	const roleName = req.body.name;
+	const roleID = req.params.roleID;
+
+	const role = await getEmployeeRoleWithName(roleName);
 	if (role) {
 		return ErrorFactory.createConflictError(res, 'Role already exists with the same name!');
 	}
@@ -51,13 +60,16 @@ EmployeeRolesRouter.put('/:roleID', ownerAuth, validateData(RolePutBodySchema), 
 		return ErrorFactory.createBadRequestError(res, 'No data provided to update!');
 	}
 
-	const roleID = await updateEmployeeRole(req.params.roleID, req.body);
+	await updateEmployeeRole(roleID, {
+		name: roleName,
+	});
 
-	return ResponseFactory.createOKResponse(res, { roleID });
+	return ResponseFactory.createOKResponse(res, 'Role updated successfully!');
 });
 
 EmployeeRolesRouter.delete('/:roleID', ownerAuth, async (req, res) => {
 	const roleID = req.params.roleID;
+
 	const role = await getEmployeeRoleWithRoleID(roleID);
 	if (!role) {
 		return ErrorFactory.createNotFoundError(res, 'Role not found!');

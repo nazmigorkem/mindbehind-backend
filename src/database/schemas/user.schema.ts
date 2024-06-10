@@ -18,6 +18,6 @@ export const Users = mysqlTable('users', {
 		.unique()
 		.notNull(),
 	password: varchar('password', {
-		length: 32,
+		length: 64,
 	}).notNull(),
 });
