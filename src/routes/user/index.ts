@@ -95,7 +95,7 @@ UsersRouter.post('/:userID/roles/:roleID', systemAdminAuth, async (req, res) => 
 	const roleID = req.params.roleID;
 	const doesUserHaveRole = await doesUserHaveRoleWithID(userID, roleID);
 	if (doesUserHaveRole) {
-		return ErrorFactory.createNotFoundError(res, 'User already has role.');
+		return ErrorFactory.createNotFoundError(res, 'User already has this role.');
 	}
 
 	await insertRoleToUser({
@@ -111,7 +111,7 @@ UsersRouter.delete('/:userID/roles/:roleID', systemAdminAuth, async (req, res) =
 	const roleID = req.params.roleID;
 	const doesUserHaveRole = await doesUserHaveRoleWithID(userID, roleID);
 	if (!doesUserHaveRole) {
-		return ErrorFactory.createNotFoundError(res, 'Role not found!');
+		return ErrorFactory.createNotFoundError(res, 'User does not have this role!');
 	}
 
 	await deleteRoleFromUser(userID, roleID);
