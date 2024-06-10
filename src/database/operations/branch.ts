@@ -2,6 +2,10 @@ import { MySQLConnection } from 'database/mysql';
 import { Branches } from 'database/schemas/branch.schema';
 import { eq } from 'drizzle-orm';
 
+export async function getBranches() {
+	return await MySQLConnection.getInstance().query.Branches.findMany();
+}
+
 export async function getBranchWithID(branchID: string) {
 	return await MySQLConnection.getInstance().query.Branches.findFirst({
 		where: eq(Branches.id, branchID),

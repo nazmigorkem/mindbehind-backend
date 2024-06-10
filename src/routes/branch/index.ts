@@ -1,4 +1,4 @@
-import { deleteBranch, getBranchWithID, insertBranch, updateBranch } from 'database/operations/branch';
+import { deleteBranch, getBranchWithID, getBranches, insertBranch, updateBranch } from 'database/operations/branch';
 import { Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import { ResponseFactory } from 'factory/response-factory';
@@ -12,6 +12,12 @@ const BranchesRouter = Router();
 
 BranchesRouter.use('/', EmployeesRouter);
 BranchesRouter.use('/roles', EmployeeRolesRouter);
+
+BranchesRouter.get('/', employeeAuth, async (req, res) => {
+	const branches = await getBranches();
+
+	return ResponseFactory.createOKResponse(res, { branches });
+});
 
 BranchesRouter.get('/:branchID', employeeAuth, async (req, res) => {
 	const branchID = req.params.branchID;
