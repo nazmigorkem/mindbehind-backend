@@ -1,6 +1,7 @@
 import { MySQLConnection } from 'database/mysql';
 import { UserRoles } from 'database/schemas/user-roles.schema';
-import { eq } from 'drizzle-orm';
+import { UserToRoles } from 'database/schemas/user-to-roles.schema';
+import { and, eq } from 'drizzle-orm';
 
 export async function getUserRoleWithRoleID(id: string) {
 	return await MySQLConnection.getInstance().query.UserRoles.findFirst({
@@ -12,6 +13,21 @@ export async function getUserRoleWithName(name: string) {
 	return await MySQLConnection.getInstance().query.UserRoles.findFirst({
 		where: eq(UserRoles.name, name),
 	});
+}
+
+export async function userHasNamedRole(employeeID: string, roleName: string) {
+	const role = await getUserRoleWithName(roleName);
+	if (!role) {
+		return false;
+	}
+
+	return !!(await MySQLConnection.getInstance().query.UserToRoles.findFirst({
+		where: and(eq(UserToRoles.userID, employeeID), eq(UserToRoles.roleID, role.id)),
+	}));
+}
+
+export async function insertRoleToUser(data: typeof UserToRoles.$inferInsert) {
+	return await MySQLConnection.getInstance().insert(UserToRoles).values(data);
 }
 
 export async function insertUserRole(data: typeof UserRoles.$inferInsert) {

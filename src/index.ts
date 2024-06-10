@@ -19,8 +19,8 @@ app.use(express.json());
 
 app.use('/branches', userAuth, BranchesRouter);
 app.use('/users', UsersRouter);
-app.use('/employee-roles', EmployeeRolesRouter);
-app.use('/user-roles', UserRolesRouter);
+app.use('/employee-roles', userAuth, EmployeeRolesRouter);
+app.use('/user-roles', userAuth, UserRolesRouter);
 app.use('/auth', AuthRouter);
 
 app.listen(3000, async () => {

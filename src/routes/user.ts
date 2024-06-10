@@ -2,7 +2,6 @@ import { getUserWithEmail, getUserWithID, insertUser } from 'database/operations
 import { Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import { ResponseFactory } from 'factory/response-factory';
-import { systemAdminAuth } from 'middlewares/auth';
 import { UserPostBodySchema } from 'types/user';
 import { validateData } from 'util/validate';
 
@@ -18,7 +17,7 @@ UsersRouter.get('/:userID', async (req, res) => {
 	ResponseFactory.createOKResponse(res, user);
 });
 
-UsersRouter.post('/', systemAdminAuth, validateData(UserPostBodySchema), async (req, res) => {
+UsersRouter.post('/', validateData(UserPostBodySchema), async (req, res) => {
 	const user = await getUserWithEmail(req.body.email);
 	if (user) {
 		ErrorFactory.createConflictError(res, 'User already exists with the same email address!');

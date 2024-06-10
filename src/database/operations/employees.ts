@@ -2,7 +2,6 @@ import { MySQLConnection } from 'database/mysql';
 import { EmployeeToRoles } from 'database/schemas/employee-to-roles.schema';
 import { Employees } from 'database/schemas/employee.schema';
 import { and, eq } from 'drizzle-orm';
-import { getEmployeeRoleWithName } from './employee-roles';
 
 export async function getEmployeeWithEmployeeID(id: string) {
 	return await MySQLConnection.getInstance().query.Employees.findFirst({
@@ -14,17 +13,6 @@ export async function getEmployeeWithUserID(branchID: string, userID: string) {
 	return await MySQLConnection.getInstance().query.Employees.findFirst({
 		where: and(eq(Employees.userID, userID), eq(Employees.branchID, branchID)),
 	});
-}
-
-export async function employeeHasNamedRole(employeeID: string, roleName: string) {
-	const role = await getEmployeeRoleWithName(roleName);
-	if (!role) {
-		return false;
-	}
-
-	return !!(await MySQLConnection.getInstance().query.EmployeeToRoles.findFirst({
-		where: and(eq(EmployeeToRoles.employeeID, employeeID), eq(EmployeeToRoles.roleID, role.id)),
-	}));
 }
 
 export async function insertEmployee(data: typeof Employees.$inferInsert) {

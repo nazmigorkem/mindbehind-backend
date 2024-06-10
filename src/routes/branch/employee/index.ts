@@ -5,13 +5,13 @@ import { getUserWithID } from 'database/operations/user';
 import { Request, Router } from 'express';
 import { ErrorFactory } from 'factory/error-factory';
 import { ResponseFactory } from 'factory/response-factory';
-import { ownerAuth } from 'middlewares/auth';
+import { employeeAuth, ownerAuth } from 'middlewares/auth';
 import { EmployeePostBodySchema, EmployeeRolePostBodySchema } from 'types/employee';
 import { validateData } from 'util/validate';
 
 const EmployeesRouter = Router();
 
-EmployeesRouter.get('/:employeeID', async (req: Request<{ branchID: string; employeeID: string }>, res) => {
+EmployeesRouter.get('/:employeeID', employeeAuth, async (req: Request<{ branchID: string; employeeID: string }>, res) => {
 	const branch = await getBranchWithID(req.params.branchID);
 	if (!branch) {
 		return ErrorFactory.createNotFoundError(res, 'Branch not found!');
